@@ -1,0 +1,87 @@
+*{
+  padding:			 0;
+  border:			 0;
+  spacing: 			 0;
+  margin : 			 0;
+}
+
+window{
+      width: 			 45%;
+}
+
+mainbox{
+      children: 		["mode-switcher","box"];
+      orientation: 		horizontal;
+}
+
+box{
+      children: 		["inputbar","listview"];
+}
+
+listview {
+    background-color:		 #1e1e2e;
+    lines:			 7;
+}
+
+element{
+    background-color: 		 inherit;
+    padding:			 12px;
+    border:			 0;
+}
+
+element-text{
+    background-color:		 inherit;
+    vertical-align:		 0.5;
+    color:			 #cdd6f4;
+}
+
+element-icon{
+    background-color:		 inherit;
+    size:			 35;
+}
+
+element selected.normal{
+    border:			  0px 4px 0px 0px;
+    border-color:		  #939ab7;
+}
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     80px 60px;
+    background-color:            transparent;
+    text-color:			 #cdd6f4;
+    background-image:            url("~/.config/rofi/ign-waifu.png", width);
+    orientation:                 horizontal;
+    children :["entry"];
+}
+entry{
+    padding:			 15px 20px ;
+    background-color:		 #1e1e2e2e;
+    border-radius:		 5px 0px;
+    text-color:			 inherit;
+    border-radius:		 30%;
+    cursor:	                 text;
+    placeholder:	         " Search ...!";
+    width:                       250px;
+}
+mode-switcher{
+    width:			 100px;
+    enabled:                     true;
+    spacing:                     50px;
+    background-color:            #1e1e2e;
+    text-color:                  #cdd6f4;
+    orientation: 		 vertical;
+    border:			 0  3px 0 0;
+    border-color: 		 #a5adcb;
+}
+button {
+    width:                       75px;
+    background-color:            inherit;
+    text-color:                  #cdd6f4;
+    cursor:                      pointer;
+    font: 			 "JetBrainsMonoNL Nerd Font  20";
+}
+button selected {
+    background-color:            inherit;
+    text-color:                  #74c7ec;
+}

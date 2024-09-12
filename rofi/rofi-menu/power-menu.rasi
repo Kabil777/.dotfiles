@@ -1,0 +1,62 @@
+*{
+padding: 0;
+margin: 0;
+sapcing: 0;
+border: 0;
+}
+window{
+width: 40%;
+height: 25%;
+children:["imager","mainbox"];
+orientation: horizontal;
+x-offset:                    550px;
+y-offset:                    -320px;
+background-color: transparent;
+border: 4px solid ;
+border-color: #11111b;
+
+}
+mainbox{
+children : ["listview"];
+background-color:            transparent;
+}
+imager{
+background-image: url("~/.config/rofi/ign-waifu.png",height);
+}
+
+listview {
+    enabled:                     true;
+    background-color: #1e1e2e;
+    orientation: vertical;
+    columns: 2;
+    lines:1;
+    cycle: true;
+    scrollbar: false;
+     dynamic:                     false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    cursor: "default";
+}
+element{
+margin: 20px;
+  padding:20px 18px;
+  border-radius: 5px;
+  background-color: #74c7ec;
+  action: "kb-accept-entry";
+  }
+
+element-text{
+font: 			 "JetBrainsMonoNL Nerd Font  25";
+vertical-align: 0.5;
+horizontal-align: 0.3;
+background-color: inherit;
+
+}
+element-icon{
+background-color: inherit;
+}
+element selected{
+background-color: #f38ba8;
+}

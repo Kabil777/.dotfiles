@@ -1,0 +1,32 @@
+font=JetBrainsMono Nerd Font
+font-size=26
+ignore-empty-password
+screenshots
+grace-no-mouse
+grace-no-touch
+
+clock
+timestr=%H:%M
+datestr=%a, %b %d
+effect-blur=10x5
+
+indicator-idle-visible
+indicator-radius=150
+indicator-thickness=7
+indicator-image=/home/kabil/Downloads/cyber.jpg
+
+line-color=#a6adc8
+ring-color=#a6adc8
+layout-bg-color=#a6adc8
+key-hl-color=#1e1e2e
+
+text-color=#a6adc8
+text-caps-lock-color=#a6adc8
+text-ver-color=#a6adc8
+
+ring-ver-color=#1e1e2e
+inside-ver-color=#1e1e2e
+
+inside-wrong-color=#a6adc8
+ring-wrong-color=#a6adc8
+text-wrong-color=#1e1e2e

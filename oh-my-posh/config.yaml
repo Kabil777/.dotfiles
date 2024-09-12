@@ -1,0 +1,41 @@
+version: 2
+final_space: true
+
+blocks:
+  - type: prompt
+    alignment: left
+    newline: true
+    segments:
+      - type: path
+        style: "plain"
+        template: "{{ path .Path .Location}}"
+        background: transparent
+        foreground: "#cba6f7"
+        properties:
+          style: folder
+      - type: git
+        style: plain
+        template: "   {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}"
+        properties:
+          branch_max_length: 25
+          fetch_status: true
+          fetch_upstream_icon: true
+        background: transparent
+        foreground: "#a6adc8"
+      - type: text
+        style: plain
+        template: " ❯"
+        background: transparent
+        foreground: "#f38ba8"  
+  - type: rprompt
+    alignment: right
+    segments:
+      - type: time
+        properties:
+          time_format: 15:04:05
+        background: transparent
+        foreground: "#a6adc8"
+transient_prompt:
+  template: "❯ "
+  background: transparent
+  foreground: "#a6adc8"
