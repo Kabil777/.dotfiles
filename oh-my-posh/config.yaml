@@ -22,6 +22,18 @@ blocks:
           fetch_upstream_icon: true
         background: transparent
         foreground: "#a6adc8"
+      - type: python
+        style: plain
+        template: " \ue235 {{ if .Venv }}({{ .Venv }}){{ end }} "
+        foreground: "#a6adc8"
+        properties:
+            display_mode: "environment"
+            fetch_virtual_env: true
+            home_enabled: true
+            branch_max_length: 25
+            fetch_status: true
+            fetch_upstream_icon: true
+ 
       - type: text
         style: plain
         template: " ❯"
@@ -38,4 +50,4 @@ blocks:
 transient_prompt:
   template: "❯ "
   background: transparent
-  foreground: "#a6adc8"
+
