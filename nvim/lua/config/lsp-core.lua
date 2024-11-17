@@ -3,7 +3,7 @@ local nvim_lsp = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 mason_lspconfig.setup({
-	ensure_installed = { "lua_ls", "ts_ls", "pyright" } -- Adjust to your desired servers
+	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls" }, -- Adjust to your desired servers
 })
 
 local on_attach = function(client, bufnr)
