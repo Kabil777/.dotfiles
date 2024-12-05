@@ -105,4 +105,5 @@ return {
 			require("neoscroll").setup({})
 		end,
 	},
+	{ "nvzone/showkeys", cmd = "ShowkeysToggle" },
 }

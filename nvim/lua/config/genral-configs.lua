@@ -17,3 +17,6 @@ require("Comment").setup({
 })
 
 require("autoclose").setup()
+require("showkeys").setup({
+	cmd = "ShowkeysToggle",
+})
