@@ -4,7 +4,6 @@ final_space: true
 blocks:
   - type: prompt
     alignment: left
-    newline: true
     segments:
       - type: path
         style: "plain"
@@ -50,4 +49,9 @@ blocks:
 transient_prompt:
   template: "❯ "
   background: transparent
+  - type: time
+  properties:
+    time_format: 15:04:05
+  background: transparent
+  foreground: "#a6adc8"
 
