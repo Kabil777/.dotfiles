@@ -10,7 +10,6 @@ local opts = {
 
 		null_ls.builtins.formatting.google_java_format,
 		null_ls.builtins.diagnostics.mypy,
-		null_ls.builtins.diagnostics.checkstyle,
 		null_ls.builtins.formatting.black,
 		null_ls.builtins.formatting.biome,
 	},

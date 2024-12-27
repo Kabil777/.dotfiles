@@ -43,7 +43,9 @@ return {
 			{
 				"<leader>fp",
 				function()
-					require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root })
+					require("telescope.builtin").find_files({
+						cwd = require("lazy.core.config").options.root,
+					})
 				end,
 				desc = "Find Plugin File",
 			},
@@ -65,6 +67,8 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"rafamadriz/friendly-snippets",
+		"simrat39/symbols-outline.nvim",
+		"nvim-tree/nvim-web-devicons",
 	},
 
 	--language_server_plugin
@@ -106,4 +110,28 @@ return {
 		end,
 	},
 	{ "nvzone/showkeys", cmd = "ShowkeysToggle" },
+	{
+		"nvim-java/nvim-java",
+		config = function()
+			require("java").setup({})
+		end,
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
 }

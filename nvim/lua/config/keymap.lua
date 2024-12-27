@@ -27,7 +27,9 @@ vim.opt.fillchars = { eob = " " }
 vim.o.laststatus = 3
 vim.opt.number = true
 vim.opt.cursorline = true
-vim.keymap.set("n", "<C-n>", ":Neotree toggle<CR>")
+vim.keymap.set("n", "<leader>n", ":Neotree toggle<CR>")
 vim.api.nvim_set_keymap("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<S-Tab>", ":bprev<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>s", ":ShowkeysToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>sy", ":SymbolsOutline<CR>", { noremap = true, silent = true })
 vim.opt.termguicolors = true
