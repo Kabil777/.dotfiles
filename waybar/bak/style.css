@@ -1,0 +1,112 @@
+@import url("/home/kabil/.cache/wal/colors-waybar.css");
+
+* {
+	font-size: 18px;
+	border-radius: 5px;
+	border: none;
+	font-family: "JetBrainsMono Nerd Font", monospace;
+	font-weight: bold;
+}
+
+window#waybar {
+	color: #7dcfff;
+	transition: ease-in;
+	transition-duration: 1.5s;
+	background: #1a1b26;
+	margin-left: 20px;
+}
+
+#custom-logo {
+	font-size: 25px;
+	margin: 5px;
+	padding-left: 9pt;
+	padding-right: 15pt;
+	color: #1a1b26;
+	background: #2ac3de;
+}
+
+#custom-power {
+	font-size: 25px;
+	margin: 5px;
+	padding-left: 11pt;
+	padding-right: 11pt;
+	color: #1a1b26;
+	background: #f7768e;
+}
+
+tooltip {
+	margin-bottom: 20px;
+}
+
+#workspaces {
+	margin: 6px 6px 6px 6px;
+	border-radius: 18px;
+	opacity: 0.8;
+	color: #1e1e2e;
+	transition: none;
+	padding-left: 12px;
+	padding-right: 6px;
+}
+
+#workspaces button.persistent {
+	transition: none;
+	background: transparent;
+	color: #1e66f5;
+	font-size: 4px;
+}
+
+#workspaces button.active {
+	transition: none;
+	color: #d20f39;
+	background: transparent;
+}
+
+#workspaces button.empty {
+	color: #1e66f5;
+	transition: none;
+	background: transparent;
+}
+
+#memory,
+#cpu,
+#bluetooth,
+#network,
+#pulseaudio,
+#battery,
+#bluetooth,
+#backlight {
+	margin: 5px 0px;
+	padding: 0px 8px;
+	border-radius: 0px;
+	background: #7aa2f7;
+	font-size: 18px;
+	color: #1a1b26;
+}
+
+#pulseaudio {
+	padding: 0px 0px 0 8px;
+}
+
+#clock,
+#cava {
+	padding: 0px 8px;
+	margin: 5px 5px 5px 0px;
+	font-size: 18px;
+	border-radius: 5px;
+	color: #1a1b26;
+	background: #7aa2f7;
+}
+
+#cava {
+	margin-left: 20px;
+}
+
+#network {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+#battery {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}

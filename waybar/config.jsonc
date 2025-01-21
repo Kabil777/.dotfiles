@@ -1,132 +1,117 @@
 {
-  "layer": "top",
-  "margin-top": 5,
-  "margin-bottom": 0,
-  "height": 35,
-  "width": 1680,
-  "modules-left":[
-  "memory",
-  "cpu",
-  "bluetooth",
-   "cava"],
-   "modules-center" :[
-     "hyprland/workspaces"
-   ],
-   "modules-right":[
-      "network",
-      "pulseaudio",
-      "battery",
-      "clock",
-      "custom/wallChange",
-      "custom/power"
-   ],
-   "memory":{
-     "format" : " {percentage}%",
-     "interval" : 10,
-     "max-length" : 10,
-     "tooltip-format" : "{used:0.1f}G/{total:0.1f}G  " 
-   },
-   "cpu" :{
-     "format": " {usage}%",
-     "interval": 10,
-     "max-length": 10 
-   },
-  "bluetooth": {
-	"format": "󰂯 {status}",
-	"toltip" : false
-},
- "cava": {
-	"framerate": 30,
-	"autosens":1,
-	"bars": 10,
-	"monstercat": true,
-	"lower_cutoff_freq": 50,
-	"higher_cutoff_freq": 10000,
-	"method": "pipewire",
-	"source": "auto",
-	"stereo": true,
-	"noise_reduction": 0.77,
-	 "bar_delimiter": 0,
-	 "sleep_timer": 7,
-	"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-	"actions": {
-	    "on-click-right": "mode"
-	}
-    },
-    "hyprland/workspaces": {
+	"layer": "bottom",
+	"position": "bottom",
+	"margin-top": 5,
+	"margin-bottom": 10,
+	"height": 35,
+	"width": 1880,
+	"modules-left": ["memory", "cpu", "backlight", "bluetooth", "cava"],
+	"modules-center": ["hyprland/workspaces"],
+	"modules-right": [
+		"network",
+		"pulseaudio",
+		"battery",
+		"clock",
+		"custom/wallChange",
+		"custom/power"
+	],
+	"memory": {
+		"format": " {percentage}%",
+		"interval": 10,
+		"max-length": 10,
+		"tooltip-format": "{used:0.1f}G/{total:0.1f}G  "
+	},
+	"cpu": {
+		"format": " {usage}%",
+		"interval": 10,
+		"max-length": 10
+	},
+	"backlight": {
+		"format": "{percent}% {icon}",
+		"format-icons": ["", ""]
+	},
+	"bluetooth": {
+		"format": "󰂯 {status}",
+		"toltip": false
+	},
+	"cava": {
+		"framerate": 30,
+		"autosens": 1,
+		//"sensitivity": 100,
+		"bars": 12,
+		"lower_cutoff_freq": 50,
+		"higher_cutoff_freq": 10000,
+		"method": "pipewire",
+		"source": "auto",
+		"stereo": true,
+		"reverse": false,
+		"bar_delimiter": 0,
+		"monstercat": true,
+		"waves": true,
+		"noise_reduction": 0.77,
+		"input_delay": 2,
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"actions": {
+			"on-click-right": "mode"
+		}
+	},
+	"hyprland/workspaces": {
 		"disable-scroll": true,
-        "on-click": "activate",
-        "all-outputs": true,
-        "active-only": false,
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": []
-        },
-        "format": "{icon}",
-        "format-icons": {
-            "active": "<span font='12'></span>",
-            "empty": "<span font='10'>♥</span>",
-            "persistent": ""
-        }
-    },
-    "network": {
+		"on-click": "activate",
+		"all-outputs": true,
+		"active-only": false,
+		"persistent-workspaces": {
+			"1": [],
+			"2": [],
+			"3": [],
+			"4": [],
+			"5": [],
+			"6": []
+		},
+		"format": "{icon}",
+		"format-icons": {
+			"active": "<span font='14'>󰮯</span>",
+			"empty": "<span font='12'></span>",
+			"persistent": "󰊠"
+		}
+	},
+	"network": {
 		"format-wifi": "{icon} {essid}",
 		"format-ethernet": "",
-	        "interval": 10,
+		"interval": 10,
 		"format-disconnected": "   ",
 		"tooltip-format-wifi": "󰤨  {ipaddr}  󰣥  {gwaddr}/{cidr}  {bandwidthUpBytes}  {bandwidthDownBytes} 󱚸 {bandwidthTotalBytes}",
 		"tooltip-format-disconnected": "Disconnected",
-        "format-icons": [
-            "󰤯", 
-            "󰤟", 
-            "󰤢", 
-            "󰤥", 
-            "󰤨"
-        ]
+		"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
 	},
 	"pulseaudio": {
-	"format": "{icon} {volume}%",
-	"format-bluetooth": "  {volume}% {icon} ",
-	"format-muted": "",
-	"format-icons": {
-			"default": [
-                "󰕿", 
-                "󰖀", 
-                "󰕾"
-            ]
+		"format": "{icon} {volume}%",
+		"format-bluetooth": "  {volume}% {icon} ",
+		"format-muted": "",
+		"format-icons": {
+			"default": ["󰕿", "󰖀", "󰕾"]
+		}
+	},
+	"battery": {
+		"format-charging": " {capacity}%",
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"interval": 10,
+		"format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "󰁹"]
+	},
+	"clock": {
+		"interval": 1,
+		"format": "{:%I:%M | %a, %b %d}",
+		"tooltip": "false"
+	},
+	"custom/wallChange": {
+		"format": "󰣌",
+		"on-click": "$HOME/.config/scripts/wall_change.sh",
+		"tooltip-format": "Background Change"
+	},
+	"custom/power": {
+		"format": "󰐦",
+		"on-click": "wlogout -m 400 -l ~/.config/wlogout/layout -b 4",
+		"tooltip-format": "Power Menu"
 	}
-},
- "battery": { 
-	  "format-charging": " {capacity}%",     
-         "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-	"interval" : 10,
-        "format-icons": [
-            "󰁻", 
-            "󰁽", 
-            "󰁿", 
-            "󰂁", 
-            "󰁹"
-        ]
-    },
-    "clock": {
-        "interval": 1,
-        "format": "{:%I:%M | %a, %b %d}",
-	"tooltip":"false"
-    },
-    "custom/wallChange":{
-      "format" : "󰣌",
-      "on-click": "$HOME/.config/scripts/wall_change.sh",
-      "tooltip-format": "Background Change"
-    },
-    "custom/power":{
-      "format" : "󰐦",
-      "on-click": "$HOME/.config/rofi/rofi-menu/power-menu.sh",
-      "tooltip-format": "Power Menu"
-    }
-
 }

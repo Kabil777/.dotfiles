@@ -1,0 +1,155 @@
+{
+	"layer": "bottom",
+	"position": "bottom",
+	"margin-top": 5,
+	"margin-bottom": 10,
+	"height": 35,
+	"width": 1880,
+	"modules-left": ["custom/logo", "hyprland/workspaces"],
+	"modules-center": ["hyprland/window"],
+	"modules-right": [
+		"cava",
+		"clock",
+		"network",
+		"pulseaudio",
+		"battery",
+		"custom/power"
+	],
+	"custom/logo": {
+		"format": "",
+		"tooltip": false,
+		"on-click": "~/.config/rofi/config.rasi"
+	},
+	"hyprland/window": {
+		"format": "{}",
+		"min-length": 5,
+		"rewrite": {
+			"": "<span foreground='#89b4fa'> </span> Hyprland",
+			"tmux(.*)": "<span foreground='#f38ba8'> </span>Tmux",
+			"(.*)nvim(.*)": "<span foreground='#9ece6a'> </span>Neovim",
+			"cava": "<span foreground='#9ece6a'>󱝉 </span>Cava",
+			"(.*)rofi(.*)": "<span foreground='#9ece6a'>󱝉 </span>Rofi menu",
+			"~": " Home!!!",
+			"zsh": "  Home!!!",
+			"kitty": "  Home!!!",
+
+			"(.*) — Mozilla Firefox": "<span foreground='#f38ba8'>󰈹 </span> $1",
+			"(.*)Mozilla Firefox": "<span foreground='#f38ba8'>󰈹 </span> <span> Firefox</span>",
+			"(.*)Spotify Free": "<span foreground='#a6e3a1'> </span> Spotify",
+
+			"OBS(.*)": "<span foreground='#a6adc8'>󰐌 </span> OBS Studio",
+
+			"VLC media player": "<span foreground='#fab387'>󰕼 </span> VLC Media Player",
+			"(.*) - VLC media player": "<span foreground='#fab387'>󰕼 </span> $1",
+
+			"GNU Image Manipulation Program": "<span foreground='#a6adc8'> </span> GNU Image Manipulation Program",
+
+			"qView": "  qView",
+
+			"(.*).jpg": "  $1.jpg",
+			"(.*).png": "  $1.png",
+			"(.*).svg": "  $1.svg",
+
+			"(.*).docx": "<span foreground='#89b4fa'> </span> $1.docx",
+			"(.*).xlsx": "<span foreground='#a6e3a1'> </span> $1.xlsx",
+			"(.*).pptx": "<span foreground='#fab387'> </span> $1.pptx",
+
+			"/": "  File Manager",
+			"Timeshift-gtk": "<span foreground='#a6e3a1'> </span> Timeshift",
+			"Authenticate": "  Authenticate"
+		}
+	},
+	"memory": {
+		"format": " {percentage}%",
+		"interval": 10,
+		"max-length": 10,
+		"tooltip-format": "{used:0.1f}G/{total:0.1f}G  "
+	},
+	"cpu": {
+		"format": " {usage}%",
+		"interval": 10,
+		"max-length": 10
+	},
+	"backlight": {
+		"format": "{percent}% {icon}",
+		"format-icons": ["", ""]
+	},
+
+	"cava": {
+		"framerate": 60,
+		"autosens": 1,
+		"bars": 12,
+		"lower_cutoff_freq": 50,
+		"higher_cutoff_freq": 10000,
+		"method": "pipewire",
+		"source": "auto",
+		"stereo": true,
+		"bar_delimiter": 0,
+		"noise_reduction": 0.77,
+		"input_delay": 2,
+		"hide_on_silence": true,
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"actions": {
+			"on-click-right": "mode"
+		}
+	},
+	"hyprland/workspaces": {
+		"disable-scroll": true,
+		"on-click": "activate",
+		"all-outputs": true,
+		"active-only": false,
+		"persistent-workspaces": {
+			"1": [],
+			"2": [],
+			"3": [],
+			"4": [],
+			"5": [],
+			"6": []
+		},
+		"format": "{icon}",
+		"format-icons": {
+			"active": "<span font='14'>󰮯</span>",
+			"empty": "<span font='12'></span>",
+			"persistent": "󰊠"
+		}
+	},
+	"network": {
+		"format-wifi": "{icon}",
+		"format-ethernet": "",
+		"interval": 10,
+		"format-disconnected": "󰤭 ",
+		"tooltip-format-wifi": "󰤨  {essid} {ipaddr}  󰣥  {gwaddr}/{cidr}  {bandwidthDownBytes} 󱚸 {bandwidthTotalBytes}",
+		"tooltip-format-disconnected": "Disconnected",
+		"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-bluetooth": "",
+		"format-muted": " {volume}%",
+		"tooltip-format": "{volume}%",
+		"format-icons": {
+			"default": ["󰕿", "󰖀", "󰕾"]
+		}
+	},
+	"battery": {
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"interval": 10,
+		"format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "󰁹"]
+	},
+	"clock": {
+		"interval": 1,
+		"format": "󰥔 {:%I:%M|%b %d}",
+		"tooltip": "false"
+	},
+	"custom/wallChange": {
+		"format": "󰣌",
+		"on-click": "$HOME/.config/scripts/wall_change.sh",
+		"tooltip-format": "Background Change"
+	},
+	"custom/power": {
+		"format": "󰐥",
+		"on-click": "wlogout -m 400 -l ~/.config/wlogout/layout -b 4",
+		"tooltip-format": "Power Menu"
+	}
+}

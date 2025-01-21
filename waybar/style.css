@@ -1,92 +1,94 @@
-@import url("/home/kabil/.cache/wal/colors-waybar.css");
+@import url('/home/kabil/.cache/wal/colors-waybar.css');
 
 * {
-	font-size: 16px;
-	border-radius: 5px;
-	border: none;
-	font-family: "JetBrainsMono Nerd Font", monospace;
-	font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  font-family: 'JetBrainsMono Nerd Font', monospace;
+  font-weight: bold;
 }
 
 window#waybar {
-	margin: 5px;
-	min-height: 45px;
-	background-color: transparent;
-	border-bottom: 0px;
-	color: #ebdbb2;
-	transition-duration: 0.5s;
-	border-radius: 20px;
+  margin: 5px;
+  min-height: 45px;
+  background-color: transparent;
+  border-bottom: 0px;
+  color: #ebdbb2;
+  transition-duration: 0.5s;
+  background: @background;
+  border-radius: 20px;
+  margin-bottom: 10px;
 }
 
 #memory {
-	color: @color2;
+  color: @color2;
 }
 
 #cpu {
-	color: @color1;
+  color: @color1;
 }
 
 #bluetooth {
-	color: @color3;
+  color: @color3;
 }
 
 #cava {
-	color: @color4;
+  color: @color4;
 }
 
 #workspaces {
-	margin: 6px 6px 6px 6px;
-	border-radius: 18px;
-	opacity: 0.8;
-	color: #1e1e2e;
-	transition: none;
-	padding-left: 12px;
-	padding-right: 6px;
+  margin: 6px 6px 6px 6px;
+  border-radius: 18px;
+  opacity: 0.8;
+  color: #1e1e2e;
+  transition: none;
+  padding-left: 12px;
+  padding-right: 6px;
 }
 
 #workspaces button.persistent {
-	transition: none;
-	color: #1e66f5;
-	background: transparent;
-	font-size: 4px;
+  transition: none;
+  background: transparent;
+  color: #1e66f5;
+  font-size: 4px;
 }
 
 #workspaces button.active {
-	transition: none;
-	color: #d20f39;
-	background: transparent;
+  transition: none;
+  color: #d20f39;
+  background: transparent;
 }
 
 #workspaces button.empty {
-	color: #1e1e2e;
-	transition: none;
-	background: transparent;
+  color: #1e66f5;
+  transition: none;
+  background: transparent;
 }
 
 #network {
-	color: @color5;
+  color: @color5;
 }
 
 #pulseaudio {
-	color: @color6;
+  color: @color6;
 }
 
 #battery {
-	color: @color7;
+  color: @color7;
 }
 
 #clock {
-	color: @color11;
+  color: @color11;
 }
 
 #custom-power {
-	font-weight: bolder;
-	color: @color12;
+  font-weight: bolder;
+  color: @color12;
 }
 
 #custom-walChange {
-	font-weight: 900;
-	color: @color14;
+  font-weight: 900;
+  color: @color14;
 }
 
 #memory,
@@ -99,10 +101,11 @@ window#waybar {
 #clock,
 #custom-power,
 #workspaces,
-#custom-wallChange {
-	border-radius: 20px;
-	background: @background;
-	margin: 5px;
-	padding: 0 15px 0 15px;
-	font-weight: bold;
+#custom-wallChange,
+#backlight {
+  border-radius: 20px;
+  margin: 5px;
+  background: @background;
+  padding: 0 15px 0 15px;
+  font-weight: bold;
 }
