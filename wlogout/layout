@@ -1,0 +1,26 @@
+{
+    "label" : "lock",
+    "action" : "sleep 1 ;swaylock -C /home/kabil/.config/sway_lock/config -f",
+    "text" : "Lock",
+    "keybind" : "l"
+}
+
+{
+    "label" : "logout",
+    "action" : "hyprctl dispatch exit 0",
+    "text" : "Exit",
+    "keybind" : "e"
+}
+{
+    "label" : "shutdown",
+    "action" : "shutdown now",
+    "text" : "Shutdown",
+    "keybind" : "s"
+}
+
+{
+    "label" : "reboot",
+    "action" : "reboot",
+    "text" : "Reboot",
+    "keybind" : "r"
+}

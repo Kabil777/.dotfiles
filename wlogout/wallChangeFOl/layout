@@ -1,0 +1,28 @@
+{
+    "label" : "nix",
+    "action" : "~/.config/scripts/wallChangeWlogout.sh nix",
+    "text" : "nix",
+    "keybind" : "l"
+}
+
+{
+    "label" : "Arch"
+    "action" : "~/.config/scripts/wallChangeWlogout.sh arch",
+    "text" : "Arch",
+    "keybind" : "e"
+}
+{
+    "label" : "Kali",
+    "action" : "~/.config/scripts/wallChangeWlogout.sh kali",
+    "text" : "Kali",
+    "keybind" : "s"
+}
+
+{
+    "label" : "Debian",
+    "action" : "~/.config/scripts/wallChangeWlogout.sh debian",
+    "text" : "Debian",
+    "keybind" : "r"
+}
+
+

@@ -1,0 +1,43 @@
+window {
+	font-family: CaskaydiaCove Nerd Font, monospace;
+	font-size: 12pt;
+	color: #cdd6f4;
+	background-color: rgba(17, 17, 27, 0.88);
+}
+
+button {
+	text-shadow: 0px 0px;
+	box-shadow: 0px 0px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30%;
+	border: none;
+	color: #ced7f4;
+	border-radius: 20px 20px 20px 20px;
+	background-color: rgba(30, 30, 46, 0);
+	margin: 5px;
+	transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+	outline-style: none;
+}
+
+button:hover,
+button:active,
+button:focus {
+	background-color: rgba(42, 195, 222, 1);
+}
+
+#lock {
+	background-image: image(url("/home/kabil/.config/wlogout/icons/lock.png"));
+}
+
+#logout {
+	background-image: image(url("/home/kabil/.config/wlogout/icons/logout.png"));
+}
+
+#shutdown {
+	background-image: image(url("/home/kabil/.config/wlogout/icons/power.png"));
+}
+
+#reboot {
+	background-image: image(url("/home/kabil/.config/wlogout/icons/restart.png"));
+}
