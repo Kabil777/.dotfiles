@@ -17,6 +17,27 @@ local on_attach = function(client, bufnr)
 		})
 	end
 end
+
+lspconfig.yamlls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		yaml = {
+			schemas = {
+				kubernetes = "*.yaml",
+				["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
+				["https://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
+				["https://json.schemastore.org/kustomization.json"] = "kustomization.{yml,yaml}",
+				["https://json.schemastore.org/helm-chart.json"] = "Chart.{yml,yaml}",
+			},
+			format = { enable = true },
+			validate = true,
+			hover = true,
+			completion = true, -- Ensure completion is enabled
+		},
+	},
+})
+
 mason_lspconfig.setup_handlers({
 	function(server_name)
 		nvim_lsp[server_name].setup({
