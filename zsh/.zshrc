@@ -9,8 +9,14 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 export PATH=$PATH:/home/kabil/.local/bin
 export EDITOR=/usr/bin/nvim
-source ~/.fzf.zsh
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.yaml)"
+
+#https://github.com/0xTadash1/bat-into-tokyonight --> source 
+export BAT_THEME="tokyonight_night"
+
+export FZF_DEFAULT_OPTS="--color=bg+:#1a1b26,bg:#11121d,spinner:#ff6ac1,hl:#c0caf5,fg:#c0caf5,header:#ffcb6b,info:#9ece6a,pointer:#7aa2f7,marker:#ffb86c,fg+:#c0caf5,prompt:#ffb86c,hl+:#ff6ac1,border:#7aa2f7"
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height=50% --preview-window=right:60%:wrap --layout=reverse --info=inline --border=rounded"
+
 
 #history
 HISTFILE=~/.zsh_history
@@ -34,7 +40,9 @@ compinit
 zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
-
+zinit light spaceship-prompt/spaceship-prompt
+zinit light spaceship-prompt/spaceship-vi-mode
+zinit ice wait"0" atload"source <(kubectl completion zsh)"
 
 
 #alias

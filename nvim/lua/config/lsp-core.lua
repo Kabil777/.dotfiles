@@ -1,48 +1,65 @@
+-- lua/lsp_config.lua
+
+local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local nvim_lsp = require("lspconfig")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-mason_lspconfig.setup({
-	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls" }, -- Adjust to your desired servers
+-- Setup capabilities for nvim-cmp
+local capabilities = cmp_nvim_lsp.default_capabilities()
+
+-- Configure Mason UI and automatic installation.
+mason.setup({
+	ui = {
+		icons = {
+			package_installed = "✓",
+			package_pending = "➜",
+			package_uninstalled = "✗",
+		},
+	},
+	automatic_installation = true,
 })
 
+-- Ensure the desired LSP servers are installed.
+mason_lspconfig.setup({
+	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls", "yamlls" },
+})
+
+-- Common on_attach function for all servers.
 local on_attach = function(client, bufnr)
 	if client.server_capabilities.documentFormattingProvider then
 		vim.api.nvim_create_autocmd("BufWritePre", {
-			group = vim.api.nvim_create_augroup("Format", { clear = true }),
+			group = vim.api.nvim_create_augroup("LspFormat", { clear = true }),
 			buffer = bufnr,
 			callback = function()
-				vim.lsp.buf.format()
+				vim.lsp.buf.format({ async = false })
 			end,
 		})
 	end
 end
 
-lspconfig.yamlls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	settings = {
-		yaml = {
-			schemas = {
-				kubernetes = "*.yaml",
-				["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
-				["https://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
-				["https://json.schemastore.org/kustomization.json"] = "kustomization.{yml,yaml}",
-				["https://json.schemastore.org/helm-chart.json"] = "Chart.{yml,yaml}",
-			},
-			format = { enable = true },
-			validate = true,
-			hover = true,
-			completion = true, -- Ensure completion is enabled
-		},
-	},
-})
-
+-- Setup handlers for each server.
 mason_lspconfig.setup_handlers({
 	function(server_name)
-		nvim_lsp[server_name].setup({
+		local opts = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-		})
+		}
+
+		if server_name == "yamlls" then
+			opts.settings = {
+				yaml = {
+					-- Disable the schema store so it doesn’t inject additional schemas.
+					schemaStore = { enable = false },
+					-- IMPORTANT: Map your custom Kubernetes schema to an array of file patterns.
+					schemas = {
+						Kubernetes = "*.yaml",
+					},
+					format = { enable = true },
+				},
+			}
+		end
+
+		nvim_lsp[server_name].setup(opts)
 	end,
 })

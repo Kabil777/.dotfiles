@@ -38,7 +38,7 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		keys = {
-			{ "<leader>/", false },
+			{ "<leader>/",  false },
 			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
 			{
 				"<leader>fp",
@@ -77,6 +77,44 @@ return {
 		"williamboman/mason.nvim",
 		config = function()
 			require("mason").setup()
+			local lspconfig = require("lspconfig")
+
+			lspconfig.yamlls.setup({
+				settings = {
+					yaml = {
+						schemas = {
+							kubernetes = "*.yaml",
+							["http://json.schemastore.org/github-workflow"] =
+							".github/workflows/*",
+							["http://json.schemastore.org/github-action"] =
+							".github/action.{yml,yaml}",
+							["http://json.schemastore.org/ansible-stable-2.9"] =
+							"roles/tasks/*.{yml,yaml}",
+							["http://json.schemastore.org/prettierrc"] =
+							".prettierrc.{yml,yaml}",
+							["http://json.schemastore.org/kustomization"] =
+							"kustomization.{yml,yaml}",
+							["http://json.schemastore.org/ansible-playbook"] =
+							"*play*.{yml,yaml}",
+							["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+							["https://json.schemastore.org/dependabot-v2"] =
+							".github/dependabot.{yml,yaml}",
+							["https://json.schemastore.org/gitlab-ci"] =
+							"*gitlab-ci*.{yml,yaml}",
+							["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
+							"*api*.{yml,yaml}",
+							["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+							"*docker-compose*.{yml,yaml}",
+							["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] =
+							"*flow*.{yml,yaml}",
+						},
+						validate = true,
+						format = { enable = true },
+						hover = true,
+						completion = true,
+					},
+				},
+			})
 		end,
 	},
 	{
@@ -133,5 +171,38 @@ return {
 				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		require("noice").setup({
+			views = {
+				cmdline_popup = {
+					border = {
+						style = "single",
+						padding = { 1, 3 },
+					},
+					position = {
+						row = "40%", -- Center vertically
+						col = "50%", -- Center horizontally
+					},
+					filter_options = {},
+					win_options = {
+						winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+					},
+				},
+			},
+		}),
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			"rcarriga/nvim-notify",
+		}
 	},
 }
