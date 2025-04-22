@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "sleep 1 ;swaylock -C /home/kabil/.config/sway_lock/config -f",
+    "action" : "sleep 1 ; hyprlock",
     "text" : "Lock",
     "keybind" : "l"
 }

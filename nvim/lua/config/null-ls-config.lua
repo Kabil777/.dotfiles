@@ -12,6 +12,16 @@ local opts = {
 		null_ls.builtins.diagnostics.mypy,
 		null_ls.builtins.formatting.black,
 		null_ls.builtins.formatting.biome,
+		{
+			name = "xmlformat",
+			method = null_ls.methods.FORMATTING,
+			filetypes = { "xml" },
+			generator = null_ls.generator({
+				command = vim.fn.stdpath("data") .. "/mason/bin/xmlformat", -- path to Mason's binary
+				args = { "--indent", "2", "--overwrite", "-" },
+				to_stdin = true,
+			}),
+		},
 	},
 
 	on_attach = function(client, bufnr)

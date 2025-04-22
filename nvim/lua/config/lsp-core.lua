@@ -22,7 +22,7 @@ mason.setup({
 
 -- Ensure the desired LSP servers are installed.
 mason_lspconfig.setup({
-	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls", "yamlls" },
+	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls", "yamlls", "helm_ls" },
 })
 
 -- Common on_attach function for all servers.
@@ -35,6 +35,12 @@ local on_attach = function(client, bufnr)
 				vim.lsp.buf.format({ async = false })
 			end,
 		})
+	end
+	if client.server_capabilities and client.server_capabilities.foldingRange == nil then
+		client.server_capabilities.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
 	end
 end
 
@@ -60,6 +66,11 @@ mason_lspconfig.setup_handlers({
 			}
 		end
 
+		if server_name == "jdtls" then
+			opts.handlers = {
+				["$/progress"] = function(_, result, ctx) end,
+			}
+		end
 		nvim_lsp[server_name].setup(opts)
 	end,
 })
