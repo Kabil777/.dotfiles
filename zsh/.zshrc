@@ -1,5 +1,4 @@
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-
 if [ ! -d $ZINIT_HOME ] ;then
 	mkdir -p $(dirname ZINIT_HOME)
 	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -9,7 +8,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 export PATH=$PATH:/home/kabil/.local/bin
 export EDITOR=/usr/bin/nvim
-export KITTY_ENABLE_TMUX=1
+# export KITTY_ENABLE_TMUX=1
 
 
 #https://github.com/0xTadash1/bat-into-tokyonight --> source 
@@ -17,10 +16,17 @@ export BAT_THEME="tokyonight_night"
 
 export FZF_DEFAULT_OPTS="--color=bg+:#1a1b26,bg:#11121d,spinner:#ff6ac1,hl:#c0caf5,fg:#c0caf5,header:#ffcb6b,info:#9ece6a,pointer:#7aa2f7,marker:#ffb86c,fg+:#c0caf5,prompt:#ffb86c,hl+:#ff6ac1,border:#7aa2f7"
 
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height=50% --preview-window=right:60%:wrap --layout=reverse --info=inline --border=rounded"
-
-fastfetch --logo ~/.config/fastfetch/jpg --logo-type kitty-icat --logo-width 25   --logo-height  18
-
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS 
+--height=80%
+  --layout=reverse
+  --border=none
+  --preview-window=right:60%:wrap:border-sharp
+  --no-scrollbar
+  --prompt='❯ '             # Stylish prompt
+  --marker='✓'              # Custom multi-select marker
+  --pointer=''             # Custom pointer
+  --header-first            # Show header before the list
+  "
 
 #history
 HISTFILE=~/.zsh_history
@@ -44,9 +50,9 @@ compinit
 zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light spaceship-prompt/spaceship-prompt
-zinit light spaceship-prompt/spaceship-vi-mode
 zinit ice wait"0" atload"source <(kubectl completion zsh)"
+zinit ice wait"0" atload"source <(kubeadm completion zsh)"
+eval "$(starship init zsh)"
 
 
 #kubernetes alaias
@@ -77,4 +83,22 @@ export NVM_DIR="$HOME/.nvm"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+alias swappy='GTK_THEME=WhiteSur-dark swappy'
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+if (( $+commands[kubeadm] )); then
+    ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-$HOME/.cache/zsh}"
+    # If the completion file does not exist, generate it and then source it
+    # Otherwise, source it and regenerate in the background
+    if [[ ! -f "$ZSH_CACHE_DIR/completions/_kubeadm" ]]; then
+        mkdir -p "$ZSH_CACHE_DIR/completions"
+        kubeadm completion zsh | tee "$ZSH_CACHE_DIR/completions/_kubeadm" >/dev/null
+        source "$ZSH_CACHE_DIR/completions/_kubeadm"
+    else
+        source "$ZSH_CACHE_DIR/completions/_kubeadm"
+        kubeadm completion zsh | tee "$ZSH_CACHE_DIR/completions/_kubeadm" >/dev/null &|
+    fi
+fi

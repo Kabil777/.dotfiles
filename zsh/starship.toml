@@ -1,0 +1,19 @@
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$fill\
+$java\
+$nodejs\
+$lua\
+$python\
+$docker_context\
+$line_break\
+➜ """
+
+[fill]
+symbol=" "
+
+[docker_context]
+format = 'via [🐋 $context](blue bold)'
