@@ -1,4 +1,9 @@
 require("noice").setup({
+	lsp = {
+		signature = {
+			enabled = false,
+		},
+	},
 	views = {
 		cmdline_popup = {
 			border = {

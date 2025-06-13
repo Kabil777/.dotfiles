@@ -4,8 +4,8 @@ require("nvim-treesitter.configs").setup({
 
 	highlight = {
 		enable = true, -- Enable syntax highlighting
-		additional_vim_regex_highlighting = false,
 	},
+	indent = { enable = true },
 })
 
 vim.cmd("doautocmd ColorScheme")

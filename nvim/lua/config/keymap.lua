@@ -1,6 +1,7 @@
 for _, v in ipairs(vim.fn.readdir(vim.g.base46_cache)) do
 	dofile(vim.g.base46_cache .. v)
 end
+
 local warnings_enabled = true
 
 vim.keymap.set("n", "<leader>tw", function()
@@ -23,28 +24,18 @@ vim.keymap.set("n", "<leader>tw", function()
 	end
 end, { desc = "Toggle Warnings" })
 
-vim.api.nvim_create_user_command("JavaNewProject", function()
-	local project = vim.fn.input("Project name: ")
-	local group = vim.fn.input("Group ID (com.example): ")
-
-	local cmd = string.format(
-		"mvn archetype:generate -DgroupId=%s -DartifactId=%s -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false",
-		group,
-		project
-	)
-
-	vim.cmd("!mkdir -p " .. project)
-	vim.cmd("!" .. string.format("cd %s && %s", project, cmd))
-	vim.cmd("cd " .. project)
-	vim.cmd("edit " .. project)
-end, {})
-
-vim.keymap.set("n", "<leader>.", vim.lsp.buf.code_action, { desc = "Quick Code Action" })
+-- Telescope Mapping
+vim.keymap.set(
+	"n",
+	"<leader>fg",
+	require("telescope").extensions.live_grep_args.live_grep_args,
+	{ desc = " Telescope Live Grep" }
+)
 
 vim.opt.fillchars = { eob = " " }
 vim.o.laststatus = 3
 vim.opt.number = true
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.keymap.set("n", "<leader>n", ":Neotree toggle<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<S-Tab>", ":bprev<CR>", { noremap = true, silent = true })
@@ -52,18 +43,33 @@ vim.api.nvim_set_keymap("n", "<leader>s", ":ShowkeysToggle<CR>", { noremap = tru
 vim.api.nvim_set_keymap("n", "<leader>sy", ":SymbolsOutline<CR>", { noremap = true, silent = true })
 vim.opt.termguicolors = true
 
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
-vim.env.JAVA_HOME = "/home/kabil/.sdkman/candidates/java/21.0.2-open"
 vim.g.java_debug_delegate_enabled = false
 
--- Make sure you've required nvim-dap somewhere
+-- lsp keymaps
+vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "LSP code definition" })
+vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "LSP code declaration" })
+vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, { desc = "LSP code implementation" })
+vim.keymap.set("n", "<leader>cR", vim.lsp.buf.references, { desc = "LSP code refrences" })
+vim.keymap.set("n", "<leader>K", vim.lsp.buf.hover, { desc = "LSP code hover definition" })
+vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP code signatue" })
+vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP code rename" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+vim.keymap.set("n", "<leader>cf", function()
+	vim.lsp.buf.format({ async = true })
+end, { desc = "LSP code formatting using lsp" })
+
+-- not required but can be useful for sometimes
+-- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+-- vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+-- vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+-- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+
+-- Dap keymaps
 local dap = require("dap")
-
--- Set a keymap to toggle breakpoints
-vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Toggle DAP Breakpoint" })
-
--- You can also bind other useful DAP actions like these:
 vim.keymap.set("n", "<F5>", dap.continue, { desc = "DAP Continue" })
 vim.keymap.set("n", "<F10>", dap.step_over, { desc = "DAP Step Over" })
 vim.keymap.set("n", "<F11>", dap.step_into, { desc = "DAP Step Into" })
 vim.keymap.set("n", "<F12>", dap.step_out, { desc = "DAP Step Out" })
+vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Toggle DAP Breakpoint" })
+-- java path
+vim.env.JAVA_HOME = "/home/kabil/.sdkman/candidates/java/current"

@@ -1,41 +1,50 @@
-local cmp = require 'cmp'
-local luasnip = require('luasnip')
-require("luasnip.loaders.from_vscode").lazy_load()
-
-local options = {
-	snippet = {
-		expand = function(args)
-			luasnip.lsp_expand(args.body)
-		end,
+return {
+	"saghen/blink.cmp",
+	version = "*",
+	event = { "LspAttach" },
+	dependencies = {
+		"rafamadriz/friendly-snippets",
 	},
-	mapping = {
-		['<C-b>'] = cmp.mapping.scroll_docs(-4),
-		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-Space>'] = cmp.mapping.complete(),
-		['<C-e>'] = cmp.mapping.abort(),
-		['<CR>'] = cmp.mapping.confirm({ select = true }),
-		['<Tab>'] = cmp.mapping.select_next_item(),
-		['<S-Tab>'] = cmp.mapping.select_prev_item(),
-	},
-	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' },
-		{ name = 'luasnip' },
-	}, {
-		{ name = 'buffer' },
-		{ name = 'path' },
-	}),
-	window = {
-		completion = {
-			border = "rounded",
-			winhighlight = "Normal:Pmenu,FloatBorder:PmenuBorder,CursorLine:PmenuSel,Search:None",
-			scrollbar = true,
+	opts = {
+		keymap = {
+			["<TAB>"] = { "select_next", "fallback" },
+			["<S-TAB>"] = { "select_prev", "fallback" },
 		},
-		documentation = {
-			border = "rounded",
-			winhighlight = "Normal:Pmenu,FloatBorder:PmenuBorder",
+		sources = {
+			default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+			providers = {
+				cmdline = {
+					min_keyword_length = 2,
+				},
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					score_offset = 100,
+				},
+			},
+		},
+		completion = {
+			menu = {
+				min_width = 25,
+				max_height = 10,
+				border = "single",
+				scrolloff = 1,
+				scrollbar = false,
+				draw = {
+					treesitter = { "lsp" },
+				},
+			},
+			documentation = {
+				auto_show_delay_ms = 0,
+				auto_show = true,
+				window = {
+					border = "single",
+					scrollbar = false,
+				},
+			},
+			ghost_text = {
+				enabled = true,
+			},
 		},
 	},
 }
-
-options = vim.tbl_deep_extend("force", options, require "nvchad.cmp")
-cmp.setup(options)

@@ -12,5 +12,5 @@ local opts = {
 		layout_strategy = "horizontal", -- Choose "horizontal" layout to support top preview positioning
 	},
 }
-
+telescope.load_extension("live_grep_args")
 telescope.setup(opts)

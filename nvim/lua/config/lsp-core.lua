@@ -1,32 +1,32 @@
 -- lua/lsp_config.lua
 
-local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local nvim_lsp = require("lspconfig")
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
--- Setup capabilities for nvim-cmp
-local capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- Configure Mason UI and automatic installation.
-mason.setup({
-	ui = {
-		icons = {
-			package_installed = "✓",
-			package_pending = "➜",
-			package_uninstalled = "✗",
-		},
+-- Loading nvim-java before jdtls configuration
+require("java").setup({
+	notifications = {
+		dap = false,
 	},
-	automatic_installation = true,
-})
+	jdtls = {
+		version = "v1.43.0",
+	},
 
--- Ensure the desired LSP servers are installed.
-mason_lspconfig.setup({
-	ensure_installed = { "lua_ls", "ts_ls", "pyright", "jdtls", "yamlls", "helm_ls" },
+	lombok = {
+		version = "nightly",
+	},
+	java_debug_adapter = {
+		enable = true,
+		version = "0.58.1",
+	},
 })
+--Common on_attach function for all servers.
+--
 
--- Common on_attach function for all servers.
 local on_attach = function(client, bufnr)
+	--Document folding
+	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 	if client.server_capabilities.documentFormattingProvider then
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			group = vim.api.nvim_create_augroup("LspFormat", { clear = true }),
@@ -44,33 +44,131 @@ local on_attach = function(client, bufnr)
 	end
 end
 
--- Setup handlers for each server.
-mason_lspconfig.setup_handlers({
-	function(server_name)
-		local opts = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-		}
+--Special setup for Java (nvim-java + nvim-jdtls)
 
-		if server_name == "yamlls" then
-			opts.settings = {
-				yaml = {
-					-- Disable the schema store so it doesn’t inject additional schemas.
-					schemaStore = { enable = false },
-					-- IMPORTANT: Map your custom Kubernetes schema to an array of file patterns.
-					schemas = {
-						Kubernetes = "*.yaml",
-					},
-					format = { enable = true },
+-- local function setup_java()
+-- 	local jdtls = require("jdtls")
+--
+-- 	local home = os.getenv("HOME")
+-- 	local workspace_dir = home .. "/.workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+--
+-- 	local config = {
+-- 		cmd = { "jdtls", "-data", workspace_dir },
+-- 		root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml" }),
+-- 		capabilities = capabilities,
+-- 		on_attach = on_attach,
+-- 	}
+--
+-- 	jdtls.start_or_attach(config)
+-- end
+
+nvim_lsp.bashls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+nvim_lsp.lua_ls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" }, -- Recognize `vim` as a global
+			},
+			hint = {
+				enable = true, -- necessary
+			},
+		},
+	},
+})
+nvim_lsp.helm_ls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+
+	settings = {
+		["helm-ls"] = {
+			yamlls = {
+				path = "yaml-language-server",
+			},
+		},
+	},
+})
+nvim_lsp.yamlls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		yaml = {
+			schemaStore = {
+				enable = true,
+				url = "",
+			},
+			schemas = {
+				kubernetes = "*.yaml",
+				["https://raw.githubusercontent.com/quantumblacklabs/kedro/develop/static/jsonschema/kedro-catalog-0.17.json"] = "conf/**/*.catalog*",
+				["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+				["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+				["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+				["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+				["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+				["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+				["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+				["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+				["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+				["https://json.schemastore.org/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
+				["https://json.schemastore.org/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+				["https://json.schemastore.org/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+			},
+			format = { enable = true },
+		},
+	},
+})
+
+nvim_lsp.jdtls.setup({
+
+	capabilities = capabilities,
+	on_attach = on_attach,
+	handlers = {
+		["$/progress"] = function(_, result, ctx) end,
+	},
+	settings = {
+		java = {
+			signatureHelp = {
+				enabled = false,
+			},
+			contentProvider = { preferred = "fernflower" },
+			inlayHints = {
+				parameterNames = {
+					enabled = true,
+					exclusions = { "this" },
 				},
-			}
+			},
+		},
+	},
+	on_init = function(client)
+		if client.config.settings then
+			client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
 		end
-
-		if server_name == "jdtls" then
-			opts.handlers = {
-				["$/progress"] = function(_, result, ctx) end,
-			}
-		end
-		nvim_lsp[server_name].setup(opts)
 	end,
 })
+--
+nvim_lsp.lemminx.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+nvim_lsp.hyprls.setup({
+
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+require("fzf-lua").setup({
+	"hide",
+})
+
+require("yaml-companion").setup({
+	schema_store = {
+		enable = true,
+	},
+})
+return {
+	on_attach = on_attach,
+}

@@ -4,14 +4,15 @@ local null_ls = require("null-ls")
 local opts = {
 	sources = {
 		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.shfmt,
 		null_ls.builtins.formatting.prettier.with({
 			extra_args = { "--single-quote", "--jsx-single-quote" }, -- Customize Prettier options if needed
 		}),
 
-		null_ls.builtins.formatting.google_java_format,
 		null_ls.builtins.diagnostics.mypy,
 		null_ls.builtins.formatting.black,
 		null_ls.builtins.formatting.biome,
+		-- with additional configuration for xml formatter
 		{
 			name = "xmlformat",
 			method = null_ls.methods.FORMATTING,
@@ -40,4 +41,5 @@ local opts = {
 		})
 	end,
 }
+
 null_ls.setup(opts)
