@@ -17,15 +17,14 @@ export BAT_THEME="tokyonight_night"
 export FZF_DEFAULT_OPTS="--color=bg+:#1a1b26,bg:#11121d,spinner:#ff6ac1,hl:#c0caf5,fg:#c0caf5,header:#ffcb6b,info:#9ece6a,pointer:#7aa2f7,marker:#ffb86c,fg+:#c0caf5,prompt:#ffb86c,hl+:#ff6ac1,border:#7aa2f7"
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS 
---height=80%
-  --layout=reverse
-  --border=none
+  --height=80%
+  --border
   --preview-window=right:60%:wrap:border-sharp
   --no-scrollbar
-  --prompt='❯ '             # Stylish prompt
+  --layout=reverse
+  --prompt='-> '             # Stylish prompt
   --marker='✓'              # Custom multi-select marker
   --pointer=''             # Custom pointer
-  --header-first            # Show header before the list
   "
 
 #history
@@ -58,7 +57,7 @@ eval "$(starship init zsh)"
 #kubernetes alaias
 alias k="kubectl"
 alias kns="kubens"
-alias kx="kx"
+alias kx="kubectx"
 
 #alias
 alias ls="eza --icons=always"
