@@ -1,0 +1,8 @@
+curl:
+  - name: "???"
+    method: "???"
+    data:
+      name: "???"
+      collage:
+        - dept: "???"
+        - year: "???"
