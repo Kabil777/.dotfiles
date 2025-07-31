@@ -1,25 +1,23 @@
 // Config //
 configuration {
-    modi:                        "drun,filebrowser,window,run";
+    modi:                        "drun,filebrowser,window";
     show-icons:                  true;
-    display-drun:                " ";
+    display-drun:                "󱘊 ";
     display-run:                 " ";
     display-filebrowser:         " ";
     display-window:              " ";
     drun-display-format:         "{name}";
     window-format:               "{w}{t}";
-    font:                        "JetBrainsMono Nerd Font 10";
-    icon-theme:                  "Tela-circle-dracula";
+    font:                        "JetBrainsMono Nerd Font Bold Italic 10";
+    icon-theme:                  "WhiteSur";
 }
 
 @theme "~/.config/rofi/theme.rasi"
 
-
 // Main //
 window {
     height:                      33em;
-    width:                       63em;
-    transparency:                "real";
+    width:                       53em;
     fullscreen:                  false;
     enabled:                     true;
     cursor:                      "default";
@@ -27,6 +25,7 @@ window {
     padding:                     0em;
     border-color:                @main-br;
     background-color:            @main-bg;
+location: center;
 }
 mainbox {
     enabled:                     true;
@@ -39,30 +38,31 @@ mainbox {
 dummywall {
     spacing:                     0em;
     padding:                     0em;
-    width:                       37em;
+    width:                       21em;
+    height:			                 2em;
     expand:                      false;
     orientation:                 horizontal;
     children:                    [ "mode-switcher" , "inputbar" ];
-    background-color:            transparent;
-    background-image:            url("~/.local/share/backgrounds/2025-03-12-14-51-36-moon.jpg", height);
+    background-image:            url("~/Downloads/bg.jpg", height);
 }
 
 
 // Modes //
 mode-switcher{
-    orientation:                 vertical;
+    orientation:		horizontal;
     enabled:                     true;
-    width:                       3.8em;
-    padding:                     9.2em 0.5em 9.2em 0.5em;
+    width:                       20em;
+    padding:                     28.2em 4.5em 2em 4.5em;
     spacing:                     1.2em;
     background-color:            transparent;
-    background-image:            url("~/.cache/hyde/wall.blur", height);
+    background-image:            url("~/Downloads/bunny.jpg", height);
 }
 button {
     cursor:                      pointer;
     border-radius:               2em;
     background-color:            @main-bg;
     text-color:                  @main-fg;
+    font:                        "JetBrainsMono Nerd Font 14";
 }
 button selected {
     background-color:            @main-fg;
