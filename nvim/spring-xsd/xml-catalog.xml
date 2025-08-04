@@ -1,0 +1,6 @@
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="http://www.springframework.org/schema/beans/spring-beans.xsd"
+    uri="/home/kabil/.config/nvim/spring-xsd/spring-beans.xsd" />
+  <uri name="http://www.springframework.org/schema/context/spring-context.xsd"
+    uri="/home/kabil/.config/nvim/spring-xsd/spring-context.xsd" />
+</catalog>

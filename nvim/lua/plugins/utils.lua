@@ -1,5 +1,6 @@
-return{
-    {
+return {
+  --dropbar at first
+  {
     "Bekaboo/dropbar.nvim",
     lazy = false,
     dependencies = {
@@ -36,6 +37,24 @@ return{
       },
     },
   },
+  -- Lazy.nvim style
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    event = "BufReadPost",
+    config = function()
+      require("ufo").setup {
+        -- fold_virt_text_handler = function()
+        --   return ""
+        -- end, -- Remove virtual text/icons
+        provider_selector = function()
+          return { "treesitter", "indent" } -- Smart folding
+        end,
+      }
+    end,
+  },
+
+  --folding plugin
   {
     "kevinhwang91/nvim-ufo",
     lazy = false,
@@ -63,6 +82,8 @@ return{
         return { "treesitter", "indent" }
       end,
     },
+  },
+  -- notify plugin
   {
     "folke/noice.nvim",
     lazy = false,
@@ -96,7 +117,24 @@ return{
     },
   },
 
-{
+  --mini utils
+  {
+    "echasnovski/mini.nvim",
+    lazy = false,
+    version = false,
+    config = function()
+      require "configs.mini_config"
+    end,
+  },
+
+  {
+    "aserowy/tmux.nvim",
+    lazy = false,
+    config = function()
+      return require("tmux").setup()
+    end,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     lazy = false,
@@ -173,8 +211,54 @@ return{
       },
     },
   },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+  },
 
-{
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    lazy = false,
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
+  {
+    "folke/snacks.nvim",
+    lazy = false,
+    priority = 1000,
+
+    ---@type snacks.Config
+    opts = {
+      dashboard = {
+        header = {
+          "╔════════════════════╗",
+          "║   Welcome  DRX7    ║",
+          "╚════════════════════╝",
+        },
+        buttons = {
+          { icon = " ", label = "New File", action = ":enew<CR>" },
+          { icon = " ", label = "Recent Files", action = ":Telescope oldfiles<CR>" },
+          { icon = " ", label = "Restore Session", action = ":SessionRestore<CR>" },
+          { icon = " ", label = "Quit", action = ":qa<CR>" },
+        },
+      },
+    },
+  },
+  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  {
+    "luukvbaal/statuscol.nvim",
+    lazy = false,
+    config = function()
+      require("statuscol").setup {}
+    end,
+  },
+  {
     "nvim-tree/nvim-tree.lua",
     opts = {
       view = {
@@ -209,8 +293,4 @@ return{
       },
     },
   },
-
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
-  }
 }
-

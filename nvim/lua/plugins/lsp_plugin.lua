@@ -1,22 +1,22 @@
 return {
-  -- require "configs.nvim-lint",
-  {
-    "williamboman/mason.nvim",
-    version = "v2.0.1",
-    config = true,
-  },
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre",
+    event = "BufWritePre", -- uncomment for format on save
     opts = require "configs.conform",
   },
+
+  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = true },
+    },
     config = function()
       require "configs.lspconfig"
     end,
   },
-  -- blink cmp
+
+  -- test new blink
   { import = "nvchad.blink.lazyspec" },
   {
     "Saghen/blink.cmp",
@@ -71,13 +71,13 @@ return {
       },
     },
   },
-
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {},
     dependencies = {
       {
         "mason-org/mason.nvim",
+        version = "v1.11.0",
         opts = {
           registries = {
             "github:nvim-java/mason-registry",
@@ -88,6 +88,20 @@ return {
     },
   },
 
+  {
+    "nvim-java/nvim-java",
+    dependencies = {
+      "nvim-java/lua-async-await",
+      {
+        "nvim-java/nvim-java-core",
+        url = "https://github.com/Kabil777/nvim-java-core.git",
+        branch = "fix/mason-api-update",
+      },
+      "nvim-java/nvim-java-test",
+      "nvim-java/nvim-java-refactor",
+      "nvim-java/nvim-java-dap",
+    },
+  },
   {
     "theHamsta/nvim-dap-virtual-text",
     lazy = false,
@@ -117,13 +131,23 @@ return {
         end,
         -- position of virtual text, see `:h nvim_buf_set_extmark()`, default tries to inline the virtual text. Use 'eol' to set to end of line
         virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
+
         -- experimental features:
-        all_frames = true, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
+        all_frames = true,      -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        virt_lines = false,     -- show virtual lines instead of virtual text (will flicker!)
         virt_text_win_col = 80, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
       }
     end,
+  },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = false,
+    -- or if using mini.icons/mini.nvim
+    -- dependencies = { "echasnovski/mini.icons" },
+    opts = {},
   },
   {
     "MysticalDevil/inlay-hints.nvim",
@@ -133,21 +157,5 @@ return {
     config = function()
       require("inlay-hints").setup()
     end,
-  },
-
-  -- Using autocmd launch (default)
-  -- Default uses jars from mason or ~/.vscode/extensions/vmware.vscode-spring-boot-x.x.x
-  {
-    "JavaHello/spring-boot.nvim",
-    ft = { "java", "yaml", "jproperties" },
-    dependencies = {
-      "mfussenegger/nvim-jdtls", -- or nvim-java, nvim-lspconfig
-      "ibhagwan/fzf-lua", -- optional, for UI features like symbol picking. Other pickers (e.g., telescope.nvim) can also be used.
-    },
-    ---@type bootls.Config
-    opts = {},
-  },
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-  },
+  }
 }

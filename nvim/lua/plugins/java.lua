@@ -1,21 +1,21 @@
+-- return {}
 return {
   "mfussenegger/nvim-jdtls",
   ft = { "java", "properties", "yaml", "yml" },
   config = function()
+    local function get_pkg_path(pkg_name)
+      return vim.fn.stdpath "data" .. "/mason/packages/" .. pkg_name
+    end
     local jdtls = require "jdtls"
     local spring_boot = require "spring_boot"
 
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
     local workspace_dir = vim.fn.stdpath "data" .. "/site/java/workspace-root/" .. project_name
 
-    local bundles = {
-      vim.fn.expand "$MASON/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar",
+    local bundles = vim.tbl_flatten {
+      spring_boot.java_extensions(),
     }
-    vim.list_extend(bundles, vim.split(vim.fn.glob "$MASON/share/java-test/*.jar", "\n"))
 
-    -- Add Spring Boot extensions
-    local spring_boot_extensions = require("spring_boot").java_extensions()
-    vim.list_extend(bundles, spring_boot_extensions)
     -- Setup LSP capabilities
     local capabilities = require("blink.cmp").get_lsp_capabilities()
     jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
@@ -26,7 +26,7 @@ return {
     -- vim.list_extend(bundles, vim.split(vim.fn.glob("$MASON/share/java-test/*.jar"), "\n"))
 
     -- Add Spring Boot extensions
-    -- local spring_boot_extensions = require("spring_boot").java_extensions()
+    local spring_boot_extensions = require("spring_boot").java_extensions()
     vim.list_extend(bundles, spring_boot_extensions)
     local config = {
       cmd = {
@@ -90,9 +90,11 @@ return {
         ["$/progress"] = function() end, -- disable progress updates.
       },
       filetypes = { "java" },
-      on_attach = function(...)
-        require("jdtls").setup_dap { hotcodereplace = "auto" }
-      end,
+      -- on_attach = function(...)
+      --   require("jdtls").setup_dap { hotcodereplace = "auto" }
+      --   local astrolsp_avail, astrolsp = pcall(require, "astrolsp")
+      --   if astrolsp_avail then astrolsp.on_attach(...) end
+      -- end,
     }
 
     vim.api.nvim_create_autocmd("FileType", {
