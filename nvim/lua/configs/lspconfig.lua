@@ -15,14 +15,13 @@ require("mason-lspconfig").setup {
 }
 require("mason-tool-installer").setup {
   ensure_installed = {
-    { "lombok-nightly" },
+    "lombok-nightly",
     "stylua",
     "prettier",
     "google-java-format",
     "shfmt",
     "ruff",
     "xmlformatter",
-
     {
       "spring-boot-tools",
       version = "1.55.1",
@@ -41,28 +40,7 @@ local servers = {
   "basedpyright",
   "rust_analyzer",
 }
--- require("spring_boot").init_lsp_commands()
--- require("lspconfig").jdtls.setup {
---   init_options = {
---     bundles = require("spring_boot").java_extensions(),
---   },
---   handlers = {
---     ["$/progress"] = function(_, result, ctx) end,
---   },
---   settings = {
---     java = {
---       signatureHelp = {
---         enabled = true,
---       },
---       -- inlayHints = {
---       --   parameterNames = {
---       --     enabled = "all",
---       --     exclusions = { "this" },
---       --   },
---       -- },
---     },
---   },
--- }
+-- require "configs.java-script.ts-ls"
 require("lspconfig").yamlls.setup {
   settings = {
     yaml = {

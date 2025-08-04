@@ -1,10 +1,15 @@
 return {
+  -- require "configs.nvim-lint",
+  {
+    "williamboman/mason.nvim",
+    version = "v2.0.1",
+    config = true,
+  },
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     opts = require "configs.conform",
   },
-
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -73,7 +78,6 @@ return {
     dependencies = {
       {
         "mason-org/mason.nvim",
-        version = "v1.11.0",
         opts = {
           registries = {
             "github:nvim-java/mason-registry",

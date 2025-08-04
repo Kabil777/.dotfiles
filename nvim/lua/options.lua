@@ -1,30 +1,10 @@
 require "nvchad.options"
-local installed_formatters = {
-  "stylua",
-  "prettier",
-  "google_java_format",
-  "shfmt",
-  "ruff",
-  "xmlformatter",
+
+vim.diagnostic.config {
+  virtual_text = true,
+  signs = true,
+  underline = false,
 }
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
-  callback = function()
-    local mason_registry = require "mason-registry"
-    for _, tool in ipairs(installed_formatters) do
-      local ok, p = pcall(mason_registry.get_package, tool)
-      if ok and not p:is_installed() then
-        p:install()
-      end
-    end
-  end,
-})
-
--- add yours here!
-
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
 
 local o = vim.o
 vim.api.nvim_create_autocmd("LspAttach", {

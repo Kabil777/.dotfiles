@@ -22,8 +22,9 @@ require("lazy").setup({
     import = "nvchad.plugins",
   },
 
-  { import = "configs.java" },
   { import = "plugins" },
+  { import = "configs.java" },
+  { import = "configs.dap.init" },
 }, lazy_config)
 
 -- load theme

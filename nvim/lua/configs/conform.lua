@@ -6,6 +6,7 @@ local options = {
     html = { "prettier" },
     java = { "google_java_format" },
     python = { "ruff" },
+    javascript = { "prettier" },
     -- html = { "prettier" },
   },
 
