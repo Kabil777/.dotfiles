@@ -55,7 +55,7 @@ mode-switcher{
     padding:                     28.2em 4.5em 2em 4.5em;
     spacing:                     1.2em;
     background-color:            transparent;
-    background-image:            url("~/Downloads/bunny.jpg", height);
+    // background-image:            url("~/Downloads/bunny.jpg", height);
 }
 button {
     cursor:                      pointer;
