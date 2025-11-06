@@ -26,7 +26,8 @@ M.lsp = {
 }
 M.ui = {
   statusline = {
-    theme = "default",
+    theme = "vscode_colored",
+    separator_style = "block",
     order = { "mode", "file", "git", "diagnostics", "%=", "%=", "cursor", "lsp", "cwd" },
     modules = {
       cursor = "%#St_pos_text# %l:%c ",
@@ -34,7 +35,7 @@ M.ui = {
 
     cmp = {
       lspkind_text = false,
-      style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+      style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
       format_colors = {
         lsp = true,
       },

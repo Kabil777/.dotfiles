@@ -16,113 +16,108 @@ configuration {
 
 // Main //
 window {
-    height:                      33em;
-    width:                       53em;
+    height:                      38em;
+    width:                       40em;
     fullscreen:                  false;
     enabled:                     true;
     cursor:                      "default";
-    spacing:                     0em;
+    spacing:                     1em;
     padding:                     0em;
     border-color:                @main-br;
     background-color:            @main-bg;
-location: center;
+    border-radius:               10px;
+    location: center;
 }
 mainbox {
     enabled:                     true;
-    spacing:                     0em;
+    spacing:                     1em;
     padding:                     0em;
-    orientation:                 horizontal;
-    children:                    [ "dummywall" , "listbox" ];
+    orientation:                 vertical;
+    children:                    ["inputbar","listview" ];
     background-color:            transparent;
 }
-dummywall {
-    spacing:                     0em;
-    padding:                     0em;
-    width:                       21em;
-    height:			                 2em;
-    expand:                      false;
-    orientation:                 horizontal;
-    children:                    [ "mode-switcher" , "inputbar" ];
-    background-image:            url("~/Downloads/bg.jpg", height);
-}
 
-
-// Modes //
-mode-switcher{
-    orientation:		horizontal;
-    enabled:                     true;
-    width:                       20em;
-    padding:                     28.2em 4.5em 2em 4.5em;
-    spacing:                     1.2em;
-    background-color:            transparent;
-    // background-image:            url("~/Downloads/bunny.jpg", height);
-}
-button {
-    cursor:                      pointer;
-    border-radius:               2em;
-    background-color:            @main-bg;
-    text-color:                  @main-fg;
-    font:                        "JetBrainsMono Nerd Font 14";
-}
-button selected {
-    background-color:            @main-fg;
-    text-color:                  @main-bg;
-}
-
-
-// Inputs //
 inputbar {
     enabled:                     true;
-    children:                    [ "entry" ];
-    background-color:            transparent;
+    spacing:                     100px 10px;
+    padding:                     100px 60px;
+    text-color:                  @main-fg;
+    orientation:                 horizontal;
+    background-image:            url("~/.local/share/backgrounds/Person_In_Planet_River.jpg",width);
+    children:                    [ "entry", "dummy", "mode-switcher" ];
 }
 entry {
-    enabled:                     false;
+    enabled:                     true;
+    expand:                      false;
+    width:                       400px;
+    padding:                     12px 16px;
+    border-radius:               100%;
+    background-color:            @main-bg;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 " Search...";
+    placeholder-color:           inherit;
+}
+dummy {
+    expand:                      true;
+    background-color:            transparent;
 }
 
-
+mode-switcher{
+    enabled:                     true;
+    spacing:                     10px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+button {
+    width:                       45px;
+    padding:                     12px;
+    border-radius:               100%;
+    background-color:            @main-bg;
+    text-color:                  @main-fg;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            @select-bg;
+    text-color:                  @select-fg;
+}
 // Lists //
 listbox {
     spacing:                     0em;
     padding:                     2em;
-    children:                    [ "dummy" , "listview" , "dummy" ];
+    children:                    ["listview" ];
     background-color:            transparent;
 }
 listview {
     enabled:                     true;
-    spacing:                     0em;
-    padding:                     0em;
+    spacing:                     0.75em;
+    padding:                     0.8em;
     columns:                     1;
-    lines:                       8;
+    lines:                       10;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
     layout:                      vertical;
     reverse:                     false;
-    expand:                      false;
+    expand:                      true;
     fixed-height:                true;
     fixed-columns:               true;
     cursor:                      "default";
     background-color:            transparent;
     text-color:                  @main-fg;
 }
-dummy {
-    background-color:            transparent;
-}
-
-
 // Elements //
 element {
     enabled:                     true;
     spacing:                     0.8em;
-    padding:                     0.4em 0.4em 0.4em 1.5em;
+    padding:                     0.4em;
     cursor:                      pointer;
     background-color:            transparent;
+    border-radius:               5px;
     text-color:                  @main-fg;
 }
 element selected.normal {
-    background-color:            @select-bg;
-    text-color:                  @select-fg;
+    background-color:            @select-fg;
 }
 element-icon {
     size:                        2.8em;
@@ -131,6 +126,7 @@ element-icon {
     text-color:                  inherit;
 }
 element-text {
+    font:                        "JetBrainsMono Nerd Font Bold 10";
     vertical-align:              0.5;
     horizontal-align:            0.0;
     cursor:                      inherit;

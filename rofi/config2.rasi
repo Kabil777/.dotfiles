@@ -1,0 +1,148 @@
+// / Config //
+configuration {
+    modi:                        "drun,filebrowser,window";
+    show-icons:                  true;
+    display-drun:                "󱘊 ";
+    display-run:                 " ";
+    display-filebrowser:         " ";
+    display-window:              " ";
+    drun-display-format:         "{name}";
+    window-format:               "{w}{t}";
+    font:                        "JetBrainsMono Nerd Font Bold Italic 10";
+    icon-theme:                  "WhiteSur";
+}
+
+@theme "~/.config/rofi/theme.rasi"
+
+// Main //
+window {
+    height:                      37em;
+    width:                       40em;
+    fullscreen:                  false;
+    enabled:                     true;
+    cursor:                      "default";
+    spacing:                     1em;
+    padding:                     0em;
+    border-color:                @main-br;
+    background-color:            @main-bg;
+    border-radius:               10px;
+    location: center;
+}
+mainbox {
+    enabled:                     true;
+    spacing:                     1em;
+    padding:                     0em;
+    orientation:                 vertical;
+    children:                    ["inputbar","listview" ];
+    background-color:            transparent;
+}
+
+inputbar {
+    enabled:                     true;
+    spacing:                     100px 10px;
+    padding:                     80px 60px;
+    text-color:                  @main-fg;
+    orientation:                 horizontal;
+    background-image:            url("~/.local/share/backgrounds/Person_In_Planet_River.jpg",width);
+    children:                    [ "entry", "dummy", "mode-switcher" ];
+}
+entry {
+    enabled:                     true;
+    expand:                      false;
+    width:                       380px;
+    padding:                     12px 16px;
+    border-radius:               100%;
+    background-color:            @main-bg;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 " Search...";
+    placeholder-color:           inherit;
+}
+dummy {
+    expand:                      true;
+    background-color:            transparent;
+}
+
+mode-switcher{
+    enabled:                     true;
+    spacing:                     10px;
+    background-color:            transparent;
+    text-color:                  @main-fg;
+}
+button {
+    width:                       45px;
+    padding:                     12px;
+    border-radius:               100%;
+    background-color:            @main-bg;
+    text-color:                  @main-fg;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            @select-fg;
+    text-color:                  @select-bg;
+}
+// Lists //
+listbox {
+    spacing:                     0em;
+    padding:                     2em;
+    children:                    ["listview" ];
+    background-color:            transparent;
+}
+listview {
+    enabled:                     true;
+    columns:                     3;
+    lines:                       1;
+    cycle:                       true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    spacing:                     15px;
+    padding:                     1em;
+    background-color:            transparent;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    padding:                     23px 10px;
+    border:                      0px solid;
+    orientation:                 vertical;
+    spacing:                     5px;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  @main-fg;
+    cursor:                      pointer;
+}
+element-text {
+    font:                        "JetBrainsMono Nerd Font Bold 10";
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+
+element selected.normal {
+    background-color:            @select-fg;
+}
+element-icon {
+    size:                        3em;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+// Error message //
+error-message {
+    text-color:                  @main-fg;
+    background-color:            @main-bg;
+    text-transform:              capitalize;
+    children:                    [ "textbox" ];
+}
+
+textbox {
+    text-color:                  inherit;
+    background-color:            inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}

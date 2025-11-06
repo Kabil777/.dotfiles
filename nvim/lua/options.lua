@@ -6,17 +6,29 @@ vim.diagnostic.config {
   underline = false,
 }
 
+-- vim.diagnostic.config { virtual_text = false } -- Disable default virtual text
 local o = vim.o
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    client.server_capabilities.semanticTokensProvider = nil
-  end,
-})
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     client.server_capabilities.semanticTokensProvider = nil
+--   end,
+-- })
+vim.diagnostic.config {
+  virtual_text = true,
+  underline = false,
+  severity_sort = true,
+  signs = {
+    text = {
+      -- Alas nerdfont icons don't render properly on Medium!
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.HINT] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+    },
+  },
+}
 
-o.foldcolumn = "1" -- '0' is not bad
-o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-o.foldlevelstart = 99
 o.foldenable = true
 o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
@@ -36,3 +48,20 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.tf", "*.tfvars", "*.tfstate", "*.tfstate.backup" },
+  callback = function()
+    vim.bo.filetype = "terraform"
+  end,
+})
+
+o.cmdheight = 1
+o.number = true
+o.relativenumber = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true

@@ -22,3 +22,8 @@ function reload_dir_match() {
 }
 
 export reload_dir_match
+
+#!/bin/bash
+
+name=$1
+echo Hello "$name"

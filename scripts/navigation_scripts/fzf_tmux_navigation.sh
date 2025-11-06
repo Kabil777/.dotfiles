@@ -27,7 +27,7 @@ dir=$(
 )
 
 if [[ -z "$dir" || ! -d "$dir" ]]; then
-  notify-send "❌ Not a valid directory!"
+  notify-send " Not a valid directory!"
   exit 1
 fi
 

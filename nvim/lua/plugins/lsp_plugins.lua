@@ -74,7 +74,6 @@ return {
 
   {
     "mason-org/mason-lspconfig.nvim",
-    opts = {},
     dependencies = {
       {
         "mason-org/mason.nvim",
@@ -126,9 +125,16 @@ return {
     end,
   },
   {
+    "mfussenegger/nvim-lint",
+    event = "BufWritePre",
+    config = function()
+      require "configs.nvim-lint"
+    end,
+  },
+  {
     "MysticalDevil/inlay-hints.nvim",
-    event = "LspAttach",
-    lazy = false,
+    -- event = "LspAttach",
+    lazy = true,
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
       require("inlay-hints").setup()
@@ -139,7 +145,7 @@ return {
   -- Default uses jars from mason or ~/.vscode/extensions/vmware.vscode-spring-boot-x.x.x
   {
     "JavaHello/spring-boot.nvim",
-    ft = { "java", "yaml", "jproperties" },
+    ft = { "java", "jproperties" },
     dependencies = {
       "mfussenegger/nvim-jdtls", -- or nvim-java, nvim-lspconfig
       "ibhagwan/fzf-lua", -- optional, for UI features like symbol picking. Other pickers (e.g., telescope.nvim) can also be used.
@@ -149,5 +155,20 @@ return {
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+  },
+  {
+    "maxmellon/vim-jsx-pretty",
+    ft = { "javascript", "javascriptreact", "typescriptreact" }, -- only for React/JSX/TSX files
+    lazy = false,
+  },
+  {
+    "nvzone/showkeys",
+    cmd = "ShowkeysToggle",
+    opts = {
+      timeout = 1,
+      maxkeys = 5,
+      -- more opts
+      position = "bottom-center",
+    },
   },
 }

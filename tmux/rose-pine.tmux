@@ -148,10 +148,6 @@ main() {
   date_time="$(get_tmux_option "@rose_pine_date_time" "")"
   readonly date_time
 
-  # Shows truncated current working directory
-  local directory
-  directory="$(get_tmux_option "@rose_pine_directory" "")"
-
   local disable_active_window_menu
   disable_active_window_menu="$(get_tmux_option "@rose_pine_disable_active_window_menu" "")"
 
@@ -164,18 +160,12 @@ main() {
   readonly window_directory
 
   local window_separator
-  window_separator="$(get_tmux_option "@rose_pine_window_separator" "")"
+  window_separator="$(get_tmux_option "@rose_pine_window_separator" "")"
   readonly window_separator
 
   local default_window_behavior
   default_window_behavior="$(get_tmux_option "@rose_pine_default_window_behavior" "")"
   readonly default_window_behavior
-
-  # Changes the background color for the current active window
-  # TODO: Together with line 251-269, end development for this feature
-  # local active_window_color
-  # active_window_color="$(get_tmux_option "@rose_pine_active_window_color" "")"
-  # readonly active_window_color
 
   # Transparency enabling for status bar
   local bar_bg_disable
@@ -210,6 +200,8 @@ main() {
   # after the plugin's right section
   local status_right_append_section
   status_right_append_section="$(get_tmux_option "@rose_pine_status_right_append_section" "")"
+  status_right_append_section="$spacer #[fg=$thm_pine]#[fg=#$thm_base,bg=$thm_pine]󱈏 #[fg=$thm_text,bg=$thm_base] #{battery_percentage}"
+
   readonly status_right_append_section
 
   # Settings that allow user to choose their own icons and status bar behaviour
@@ -219,11 +211,11 @@ main() {
   readonly current_window_icon
 
   local current_session_icon
-  current_session_icon="$(get_tmux_option "@rose_pine_session_icon" "")"
+  current_session_icon=""
   readonly current_session_icon
 
   local username_icon
-  username_icon="$(get_tmux_option "@rose_pine_username_icon" "")"
+  username_icon=" "
   readonly username_icon
 
   local hostname_icon
@@ -234,13 +226,11 @@ main() {
   date_time_icon="$(get_tmux_option "@rose_pine_date_time_icon" "󰃰")"
   readonly date_time_icon
 
-  local current_folder_icon
-  current_folder_icon="$(get_tmux_option "@rose_pine_folder_icon" "")"
-  readonly current_folder_icon
-
+  local spacer
+  spacer=" "
   # Changes the icon / character that goes between each window's name in the bar
   local window_status_separator
-  window_status_separator="$(get_tmux_option "@rose_pine_window_status_separator" " | ")"
+  window_status_separator="$(get_tmux_option "@rose_pine_window_status_separator" "  ")"
 
   # This setting does nothing by itself, it enables the 2 below it to toggle the simplified bar
   local prioritize_windows
@@ -255,77 +245,38 @@ main() {
   user_window_count="$(get_tmux_option "@rose_pine_window_count" "")"
 
   # Custom window status that goes between the number and the window name
-  local custom_window_sep="#[fg=$thm_iris]#I#[fg=$thm_iris,]$window_separator#[fg=$thm_iris]#W"
-  local custom_window_sep_current="#I#[fg=$thm_gold,bg=""]$window_separator#[fg=$thm_gold,bg=""]#W"
-
+  local custom_window_sep="#[fg=$thm_text]#W #[fg=$thm_base,bg=$thm_iris]$spacer#I#[fg=$thm_iris,bg=$thm_base]$window_separator"
+  local custom_window_sep_current="#[fg=$thm_text]#W #[fg=$thm_base,bg=$thm_love]$spacer#[attr=bold]#I#[fg=$thm_love,bg=$thm_base]$window_separator"
   local right_separator
-  right_separator="$(get_tmux_option "@rose_pine_right_separator" " | ")"
+  right_separator="$(get_tmux_option "@rose_pine_right_separator" "  ")"
 
   local left_separator
-  left_separator="$(get_tmux_option "@rose_pine_left_separator" "  ")"
+  left_separator="$(get_tmux_option "@rose_pine_left_separator" "  ")"
 
   local field_separator
   # NOTE: Don't remove
-  field_separator="$(get_tmux_option "@rose_pine_field_separator" " | ")"
+  field_separator="$(get_tmux_option "@rose_pine_field_separator" "  ")"
 
-  # END
-
-  local spacer
-  spacer=" "
   # I know, stupid, right? For some reason, spaces aren't consistent
 
   # These variables are the defaults so that the setw and set calls are easier to parse
-
-  local show_window
-  readonly show_window=" #[fg=$thm_subtle]$current_window_icon #[fg=$thm_rose]#W$spacer"
-
   local show_window_in_window_status
-  show_window_in_window_status="#[fg=$thm_iris]#[fg=$thm_iris,]$left_separator#[fg=$thm_iris]#W"
+  show_window_in_window_status="#[fg=$thm_iris]#[fg=$thm_iris]#[fg=$thm_iris]#W"
 
   local show_window_in_window_status_current
-  show_window_in_window_status_current="#I#[fg=$thm_gold,bg=""]$left_separator#[fg=$thm_gold,bg=""]#W"
+  show_window_in_window_status_current="#[fg=$thm_subtle,bg=""]#[fg=$thm_gold,bg=""]#W"
 
   local show_session
-  readonly show_session=" #[fg=#{?client_prefix,$thm_love,$thm_text}]$current_session_icon #[fg=$thm_text]#S "
+  readonly show_session="#[fg=$thm_pine]#[fg=#$thm_base,bg=$thm_pine]$current_session_icon #[fg=$thm_text,bg=$thm_base] #S "
 
   local show_user
-  readonly show_user="#[fg=$thm_subtle]$username_icon$spacer#[fg=$thm_text]#(whoami)#[fg=$thm_subtle]$right_separator"
+  readonly show_user="#[fg=$thm_love]#[fg=#$thm_base,bg=$thm_love]$username_icon#[fg=$thm_text,bg=$thm_base] #(whoami)$spacer"
 
   local show_host
-  readonly show_host=" #[fg=$thm_subtle]$hostname_icon$spacer#[fg=$thm_text]#H#[fg=$thm_subtle]$right_separator"
+  readonly show_host="#[fg=$thm_foam]#[fg=#$thm_base,bg=$thm_foam]$hostname_icon#[fg=$thm_text,bg=$thm_base] #H "
 
   local show_date_time
-  readonly show_date_time="#[fg=$thm_subtle]$date_time_icon #[fg=$thm_text]$date_time#[fg=$thm_subtle]$right_separator"
-
-  local show_directory
-  readonly show_directory="#[fg=$thm_subtle]$current_folder_icon #[fg=$thm_rose]#{b:pane_current_path} "
-
-  local show_directory_in_window_status
-  # BUG: It doesn't let the user pass through a custom window name
-  show_directory_in_window_status="$left_separator#[fg=$thm_gold,bg=""]#{b:pane_current_path}"
-
-  local show_directory_in_window_status_current
-  show_directory_in_window_status_current="#I$left_separator#[fg=$thm_gold,bg=""]#{b:pane_current_path}"
-
-  # TODO: This needs some work and testing, rn I can't figure it out
-  # if [[ "$active_window_color" == "love" ]]; then
-  #     show_window_in_window_status_current="#[bg=$thm_love,bg=$thm_base]#I$left_separator#W"
-  # fi
-  # if [[ "$active_window_color" == "gold" ]]; then
-  #     show_window_in_window_status_current="#[bg=$thm_gold,bg=$thm_base]#I$left_separator#W"
-  # fi
-  # if [[ "$active_window_color" == "rose" ]]; then
-  #     show_window_in_window_status_current="#bg=$thm_rose,bg=$thm_base#I$left_separator#W"
-  # fi
-  # if [[ "$active_window_color" == "pine" ]]; then
-  #     show_window_in_window_status_current="#[bg=$thm_pine,bg=$thm_base]#I$left_separator#W"
-  # fi
-  # if [[ "$active_window_color" == "foam" ]]; then
-  #     show_window_in_window_status_current="#[bg=$thm_foam,bg=$thm_base]#I$left_separator#W"
-  # fi
-  # if [[ "$active_window_color" == "iris" ]]; then
-  #     show_window_in_window_status_current="#[bg=$thm_iris,bg=$thm_base]#I$left_separator#W"
-  # fi
+  readonly show_date_time="#[fg=$thm_rose]#[fg=#$thm_base,bg=$thm_rose]$date_time_icon#[fg=$thm_text,bg=$thm_base] $date_time"
 
   # Left status: Now moved to a variable called left_column
   # (we can append / prepend things to it)
@@ -340,10 +291,7 @@ main() {
   # TEST: This needs to be tested further
   if [[ "$bar_bg_disable" == "on" ]]; then
     set status-style "fg=$thm_pine,bg=$bar_bg_disabled_color_option"
-    show_window_in_window_status="#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]#I#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]$left_separator#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]#W"
-    show_window_in_window_status_current="#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]#I#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]$left_separator#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]#W"
-    show_directory_in_window_status="#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]#I#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]$left_separator#[fg=$thm_iris,bg=$bar_bg_disabled_color_option]#{b:pane_current_path}"
-    show_directory_in_window_status_current="#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]#I#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]$left_separator#[fg=$thm_gold,bg=$bar_bg_disabled_color_option]#{b:pane_current_path}"
+
     set window-status-style "fg=$thm_iris,bg=$bar_bg_disabled_color_option"
     set window-status-current-style "fg=$thm_gold,bg=$bar_bg_disabled_color_option"
     set window-status-activity-style "fg=$thm_rose,bg=$bar_bg_disabled_color_option"
@@ -362,13 +310,6 @@ main() {
     window_status_current_format=$show_window_in_window_status_current
     setw window-status-format "$window_status_format"
     setw window-status-current-format "$window_status_current_format"
-  # See line 268
-  elif [[ "$window_directory" ]]; then
-    local window_status_format=$show_directory_in_window_status
-    local window_status_current_format=$show_directory_in_window_status_current
-    setw window-status-format "$window_status_format"
-    setw window-status-current-format "$window_status_current_format"
-    #
   # Base behaviour, but whit cool colors
   elif [[ "$default_window_behavior" == "on" || "$default_window_behavior" == "" ]]; then
     unset_option window-status-format
@@ -376,7 +317,7 @@ main() {
   fi
 
   if [[ "$user" == "on" ]]; then
-    right_column=$right_column$show_user
+    right_column=$right_column$show_session$show_user
   fi
 
   if [[ "$host" == "on" ]]; then
@@ -386,19 +327,8 @@ main() {
   if [[ "$date_time" != "" ]]; then
     right_column=$right_column$show_date_time
   fi
-
-  if [[ "$directory" == "on" ]]; then
-    right_column=$right_column$show_directory
-  fi
-
   # The append and prepend sections are for inter-plugin compatibility
   # and extension
-  if [[ "$disable_active_window_menu" == "on" ]]; then
-    left_column=$show_session
-  else
-    left_column=$show_session$show_window
-  fi
-  #
   # Appending / Prepending custom user sections to
   if [[ "$status_left_prepend_section" != "" ]]; then
     left_column=$status_left_prepend_section$left_column
@@ -406,9 +336,7 @@ main() {
   if [[ "$status_left_append_section" != "" ]]; then
     left_column=$left_column$status_left_append_section$spacer
   fi
-  if [[ "$status_right_prepend_section" != "" ]]; then
-    right_column=$status_right_prepend_section$right_column
-  fi
+
   if [[ "$status_right_append_section" != "" ]]; then
     right_column=$right_column$status_right_append_section
   fi
@@ -416,37 +344,6 @@ main() {
   # We set the sections
   set status-left "$left_column"
   set status-right "$right_column"
-
-  # Variable logic for the window prioritization
-  local current_window_count
-  local current_window_width
-
-  current_window_count=$(tmux list-windows | wc -l)
-  current_window_width=$(tmux display -p "#{window_width}")
-
-  # NOTE: Can possibly integrate the $only_windows mode into this
-  if [[ "$prioritize_windows" == "on" ]]; then
-    if [[ "$current_window_count" -gt "$user_window_count" || "$current_window_width" -lt "$user_window_width" ]]; then
-      set status-left "$left_column$show_directory"
-      # set status-right "$show_directory"
-      set status-right ""
-    fi
-  else
-    set status-right "$right_column"
-  fi
-
-  # Defaults to a NerdFont icon, user can change through an option
-  if [[ "$window_status_separator" != "  " ]]; then
-    setw window-status-separator "$window_status_separator"
-  else
-    setw window-status-separator "  "
-  fi
-
-  # Leaves only the window list on the left side
-  if [[ "$only_windows" == "on" ]]; then
-    set status-left ""
-    set status-right ""
-  fi
 
   # NOTE: Dont remove this, it can be useful for references
   # setw window-status-format "$window_status_format"
