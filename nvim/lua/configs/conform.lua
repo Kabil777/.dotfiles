@@ -2,14 +2,15 @@ local options = {
     formatters_by_ft = {
         lua = { "stylua" },
         -- css = { "prettier" },
-        css = { "prettier" },
-        html = { "prettier" },
+        css = { "prettierd" },
+        html = { "prettierd" },
         java = { "google-java-format" },
         python = { "ruff" },
-        javascript = { "prettier" },
-        typescript = { "prettier" },
+        go = { "golines", "gofumpt", "goimports-reviser" },
+        javascript = { "biome" },
+        typescript = { "biome" },
         javascriptreact = { "biome" },
-        typescriptreact = { "prettier" },
+        typescriptreact = { "biome" },
         terraform = { "terraform_fmt" },
         -- html = { "prettier" },
     },
@@ -23,7 +24,7 @@ local options = {
     },
     format_on_save = {
         -- These options will be passed to conform.format()
-        timeout_ms = 500,
+        timeout_ms = 1000,
         lsp_fallback = true,
     },
 }

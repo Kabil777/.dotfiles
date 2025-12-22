@@ -4,10 +4,11 @@ require("nvim-treesitter").setup {
     ensure_installed = { "java", "go", "javascript", "yaml", "bash", "terraform", "hcl", "xml" },
 }
 
-vim.g.lspconfig_disable_yamlls = true
+-- vim.g.lspconfig_disable_yamlls = true
 require "configs.javascript.ts_ls"
 require("mason-lspconfig").setup {
     ensure_installed = {
+        "gopls",
         "lua_ls",
         "rust_analyzer",
         "hyprls",
@@ -30,7 +31,7 @@ require("mason-tool-installer").setup {
         "lombok-nightly",
         "stylua",
         "luacheck",
-        "prettier",
+        "prettierd",
         "google-java-format",
         "shfmt",
         "ruff",
@@ -59,7 +60,8 @@ local servers = {
     "tailwindcss",
     "yamlls",
     "lemminx",
-    "vtsls",
+    "ts_ls",
+    "gopls",
 }
 -- require "configs.java-script.ts-ls"
 vim.lsp.config("yamlls", {
@@ -126,6 +128,15 @@ vim.lsp.config("tailwindcss", {
 
 vim.lsp.config("terraformls", {
     flags = { debounce_text_changes = 150 },
+})
+
+vim.lsp.config("qmlls", {
+    filetypes = { "qml", "qmljs" },
+    cmd = { "qmlls" },
+    cmd_env = {
+        QML2_IMPORT_PATH = "/usr/lib/qt6/qml",
+        QML_IMPORT_PATH = "/usr/lib/qt6/qml",
+    },
 })
 
 vim.diagnostic.config {
