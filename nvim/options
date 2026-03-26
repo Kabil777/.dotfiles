@@ -1,0 +1,146 @@
+
+# Highlight groups ~
+
+- `MiniPickBorder` - window border.
+- `MiniPickBorderBusy` - window border while picker is busy processing.
+- `MiniPickBorderText` - non-prompt on border.
+- `MiniPickCursor` - cursor during active picker (hidden by default).
+- `MiniPickIconDirectory` - default icon for directory.
+- `MiniPickIconFile` - default icon for file.
+- `MiniPickHeader` - headers in info buffer and previews.
+- `MiniPickMatchCurrent` - current matched item.
+- `MiniPickMatchMarked` - marked matched items.
+- `MiniPickMatchRanges` - ranges matching query elements.
+- `MiniPickNormal` - basic foreground/background highlighting.
+- `MiniPickPreviewLine` - target line in preview.
+- `MiniPickPreviewRegion` - target region in preview.
+- `MiniPickPrompt` - prompt.
+- `MiniPickPromptCaret` - caret in prompt.
+- `MiniPickPromptPrefix` - prefix of the prompt.
+
+# Match ~
+*MiniPick-source.match*
+
+`source.match` is a callable defining how stritems
+(see |MiniPick-source.items-stritems|) are matched (filtered and sorted) based
+on the query.
+
+It will be called with the following arguments:
+- `stritems` - all available stritems for current picker.
+- `inds` - array of `stritems` indexes usually pointing at current matches.
+  It does point to current matches in the case of interactively appending
+  character at the end of the query. It assumes that matches for such bigger
+  query is a subset of previous matches (implementation can ignore it).
+  This can be utilized to increase performance by checking fewer stritems.
+- `query` - array of strings. Usually (like is common case of user interactively
+  typing query) each string represents one character. However, any strings are
+  allowed, as query can be set with |MiniPick.set_picker_query()|.
+
+It should either return array of match indexes for stritems elements matching
+the query (synchronous) or explicitly use |MiniPick.set_picker_match_inds()|
+to set them (may be asynchronous).
+
+Notes:
+- The result can be any array of `stritems` indexes, i.e. not necessarily
+  a subset of input `inds`.
+
+- Both `stritems` and `query` depend on values of 'ignorecase' and 'smartcase'.
+  If query shows "ignore case" properties (only 'ignorecase' is set or both
+  'ignorecase' / 'smartcase' are set and query has only lowercase characters),
+  then `stritems` and `query` will have only lowercase characters.
+  This allows automatic support for case insensitive matching while being
+  faster and having simpler match function implementation.
+
+- Writing custom `source.match` usually means also changing |MiniPick-source.show|
+  because it is used to highlight stritems parts actually matching the query.
+
+Example of simple "exact" `match()` preserving initial order: >lua
+
+  local match_exact = function(stritems, inds, query)
+    local prompt_pattern = vim.pesc(table.concat(query))
+    local f = function(i) return stritems[i]:find(prompt_pattern) ~= nil end
+    return vim.tbl_filter(f, inds)
+  end
+  -- For non-blocking version see `:h MiniPick.poke_is_picker_active()`
+<
+Default value is |MiniPick.default_match()|.
+
+# Show ~
+*MiniPick-source.show*
+
+`source.show` is a callable defining how matched items are shown in the window.
+
+It will be called with the following arguments:
+- `buf_id` - identifier of the target buffer.
+- `items_to_show` - array of actual items to be shown in `buf_id`. This is
+  a subset of currently matched items computed to fit in current window view.
+- `query` - array of strings. Same as in `source.match`.
+
+It should update buffer `buf_id` to visually represent `items_to_show`
+__one item per line starting from line one__ (it shouldn't depend on
+`options.content_from_bottom`). This also includes possible visualization
+of which parts of stritem actually matched query.
+
+Example (assuming string items; without highlighting): >lua
+
+  local show_prepend = function(buf_id, items_arr, query)
+    local lines = vim.tbl_map(function(x) return 'Item: ' .. x end, items_arr)
+    vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+  end
+<
+Default value is |MiniPick.default_show()|.
+
+# Preview ~
+*MiniPick-source.preview*
+
+`source.preview` is a callable defining how item preview is done.
+
+It will be called with the following arguments:
+- `buf_id` - identifier of the target buffer. Note: for every separate instance
+  of item previewing new scratch buffer is be created.
+- `item` - item to preview.
+
+It should update buffer `buf_id` to visually represent `item`.
+
+Example: >lua
+
+  local preview_inspect = function(buf_id, item)
+    local lines = vim.split(vim.inspect(item), '\n')
+    vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+  end
+<
+Default value is |MiniPick.default_preview()|.
+
+# Choose an item ~
+*MiniPick-source.choose*
+
+`source.choose` is a callable defining what to do when an item is chosen.
+
+It will be called with the following arguments:
+- `item` - chosen item. Always non-`nil`.
+
+It should perform any intended "choose" action for an item and return
+a value indicating whether picker should continue (i.e. not stop):
+`nil` and `false` will stop picker, other values will continue.
+
+Notes:
+- It is called when picker window is still current. Use `windows.target` value
+  from |MiniPick.get_picker_state()| output to do something with target window.
+
+Example: >lua
+
+  local choose_file_continue = function(item)
+    if vim.fn.filereadable(item) == 0 then return end
+    vim.api.nvim_win_call(
+      MiniPick.get_picker_state().windows.main,
+      function() vim.cmd('edit ' .. item) end
+    )
+    return true
+  end
+<
+Default value is |MiniPick.default_choose()|.
+
+mini.splitjoin
+mini.surround
+mini.move
+mini.bracketed

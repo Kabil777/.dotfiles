@@ -6,51 +6,51 @@
 local M = {}
 
 M.base46 = {
-  theme = "tokyodark",
+    theme = "gruvbox",
 
-  hl_override = {
-    Comment = { italic = true },
-    ["@comment"] = { italic = true },
+    hl_override = {
+        Comment = { italic = true },
+        ["@comment"] = { italic = true },
 
-    NormalFloat = { fg = "NONE", bg = "NONE" },
-    CmpBorder = { link = "FloatBorder" },
-    CmpDocBorder = { link = "CmpBorder" },
-    CmpDoc = { bg = "NONE" },
-    NvimTreeCursorLine = { link = "CursorLine" },
+        NormalFloat = { fg = "NONE", bg = "NONE" },
+        CmpBorder = { link = "FloatBorder" },
+        CmpDocBorder = { link = "CmpBorder" },
+        CmpDoc = { bg = "NONE" },
+        NvimTreeCursorLine = { link = "CursorLine" },
 
-    Pmenu = { bg = "#282828", fg = "#d5c4a1" },
-  },
+        Pmenu = { bg = "#282828", fg = "#d5c4a1" },
+    },
 }
 M.lsp = {
-  signature = false,
+    signature = false,
 }
 M.ui = {
-  statusline = {
-    theme = "vscode_colored",
-    separator_style = "block",
-    order = { "mode", "file", "git", "diagnostics", "%=", "%=", "cursor", "lsp", "cwd" },
-    modules = {
-      cursor = "%#St_pos_text# %l:%c ",
-    },
+    statusline = {
+        theme = "vscode_colored",
+        separator_style = "block",
+        order = { "mode", "file", "git", "diagnostics", "%=", "%=", "cursor", "lsp", "cwd" },
+        modules = {
+            cursor = "%#St_pos_text# %l:%c ",
+        },
 
-    cmp = {
-      lspkind_text = false,
-      style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
-      format_colors = {
-        lsp = true,
-      },
+        cmp = {
+            lspkind_text = false,
+            style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
+            format_colors = {
+                lsp = true,
+            },
+        },
     },
-  },
-  tabufline = {
-    enabled = false,
-    lazyload = false,
-    order = { "buffers", "tabs", "btns" },
-    modules = nil,
-  },
-  lsp = {
-    signature = false,
-    hover = false,
-  },
+    tabufline = {
+        enabled = true,
+        lazyload = false,
+        order = { "buffers", "tabs", "btns" },
+        modules = nil,
+    },
+    lsp = {
+        signature = false,
+        hover = false,
+    },
 }
 vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "Debug", linehl = "", numhl = "" })
 

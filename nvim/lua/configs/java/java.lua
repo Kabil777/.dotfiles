@@ -1,6 +1,6 @@
 return {
     "mfussenegger/nvim-jdtls",
-    ft = { "java", "properties", "yml" },
+    ft = { "java" },
     config = function()
         local jdtls = require "jdtls"
 
@@ -19,17 +19,38 @@ return {
         local capabilities = require("blink.cmp").get_lsp_capabilities()
         jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
+        local function filter_existing_jars(items)
+            local out = {}
+            for _, item in ipairs(items) do
+                if type(item) == "string" and item ~= "" and vim.fn.filereadable(item) == 1 then
+                    table.insert(out, item)
+                end
+            end
+            return out
+        end
+
+        bundles = filter_existing_jars(bundles)
+
+        local launcher = vim.fn.glob "$MASON/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"
+        if launcher == nil or launcher == "" then
+            vim.notify("jdtls launcher jar not found in Mason", vim.log.levels.ERROR)
+            return
+        end
+
+        local jdtls_config = vim.fn.expand "$MASON/share/jdtls/config_linux"
+        if vim.fn.isdirectory(jdtls_config) == 0 then
+            jdtls_config = vim.fn.expand "$MASON/share/jdtls/config"
+        end
+
         -- Add your Java debug and test bundles here
         -- For example:
         -- table.insert(bundles, vim.fn.expand("$MASON/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar"))
         -- vim.list_extend(bundles, vim.split(vim.fn.glob("$MASON/share/java-test/*.jar"), "\n"))
 
-        -- Add Spring Boot extensions
-        -- local spring_boot_extensions = require("spring_boot").java_extensions()
-        vim.list_extend(bundles, spring_boot_extensions)
         local config = {
             cmd = {
                 "java",
+                "--enable-native-access=ALL-UNNAMED",
                 "-Declipse.application=org.eclipse.jdt.ls.core.id1",
                 "-Dosgi.bundles.defaultStartLevel=4",
                 "-Declipse.product=org.eclipse.jdt.ls.core.product",
@@ -43,9 +64,9 @@ return {
                 "--add-opens",
                 "java.base/java.lang=ALL-UNNAMED",
                 "-jar",
-                vim.fn.glob "$MASON/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar",
+                launcher,
                 "-configuration",
-                vim.fn.expand "$MASON/share/jdtls/config",
+                jdtls_config,
                 "-data",
                 workspace_dir,
             },
@@ -95,7 +116,7 @@ return {
         }
 
         vim.api.nvim_create_autocmd("FileType", {
-            pattern = { "java", "properties", "yaml", "yml" },
+            pattern = { "java" },
             callback = function()
                 require("jdtls").start_or_attach(config)
             end,

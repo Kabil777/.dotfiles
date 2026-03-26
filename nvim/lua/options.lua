@@ -1,9 +1,9 @@
 require "nvchad.options"
 
 vim.diagnostic.config {
-  virtual_text = true,
-  signs = true,
-  underline = false,
+    virtual_text = true,
+    signs = true,
+    underline = false,
 }
 
 -- vim.diagnostic.config { virtual_text = false } -- Disable default virtual text
@@ -15,18 +15,18 @@ local o = vim.o
 --   end,
 -- })
 vim.diagnostic.config {
-  virtual_text = true,
-  underline = false,
-  severity_sort = true,
-  signs = {
-    text = {
-      -- Alas nerdfont icons don't render properly on Medium!
-      [vim.diagnostic.severity.ERROR] = " ",
-      [vim.diagnostic.severity.WARN] = " ",
-      [vim.diagnostic.severity.HINT] = " ",
-      [vim.diagnostic.severity.INFO] = " ",
+    virtual_text = true,
+    underline = false,
+    severity_sort = true,
+    signs = {
+        text = {
+            -- Alas nerdfont icons don't render properly on Medium!
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.HINT] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+        },
     },
-  },
 }
 
 o.foldenable = true
@@ -37,23 +37,23 @@ require("dapui").setup()
 local dap, dapui = require "dap", require "dapui"
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
+    dapui.open()
 end
 
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
+    dapui.close()
 end
 
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
+    dapui.close()
 end
 vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
 
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "*.tf", "*.tfvars", "*.tfstate", "*.tfstate.backup" },
-  callback = function()
-    vim.bo.filetype = "terraform"
-  end,
+    pattern = { "*.tf", "*.tfvars", "*.tfstate", "*.tfstate.backup" },
+    callback = function()
+        vim.bo.filetype = "terraform"
+    end,
 })
 
 o.cmdheight = 1
@@ -65,3 +65,24 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+
+local set = vim.api.nvim_set_hl
+
+set(0, "DiagnosticError", { fg = "#ff7a7a" })
+set(0, "DiagnosticWarn", { fg = "#e0af68" })
+set(0, "DiagnosticInfo", { fg = "#7aa2f7" })
+set(0, "DiagnosticHint", { fg = "#9ece6a" })
+
+set(0, "DiagnosticVirtualTextError", { fg = "#ff7a7a" })
+set(0, "DiagnosticVirtualTextWarn", { fg = "#e0af68" })
+set(0, "DiagnosticVirtualTextInfo", { fg = "#7aa2f7" })
+set(0, "DiagnosticVirtualTextHint", { fg = "#9ece6a" })
+
+set(0, "DiagnosticUnderlineError", { undercurl = true, sp = "#ff7a7a" })
+set(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = "#e0af68" })
+
+vim.api.nvim_create_user_command("ThemeSwitch", function(opts)
+    local current = require("chadrc").base46.theme
+    require("nvchad.themes.utils").reload_theme(opts.args)
+    require("nvchad.utils").replace_word(current, '"' .. opts.args .. '"')
+end, { nargs = 1 })

@@ -12,6 +12,7 @@ local options = {
         javascriptreact = { "biome" },
         typescriptreact = { "biome" },
         terraform = { "terraform_fmt" },
+        nginx = { "nginx-config-formatter" },
         -- html = { "prettier" },
     },
 

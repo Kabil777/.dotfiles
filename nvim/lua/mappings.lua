@@ -3,7 +3,6 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
-vim.o.mouse = ""
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -39,10 +38,40 @@ end, { desc = "Close DAP UI" })
 map("n", "<C-h>", "TmuxNavigateLeft")
 
 -- mini overlays highlights
-vim.api.nvim_set_hl(0, "FloatTitle", { fg = "#7aa2f7", bg = "#11121d", bold = true })
-vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { fg = "#414868", nocombine = true })
-vim.api.nvim_set_hl(0, "MiniPickPrompt", { fg = "#9ece6a", nocombine = true })
+-- vim.api.nvim_set_hl(0, "FloatTitle", { fg = "#7aa2f7", bg = "#11121d", bold = true })
+-- vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { fg = "#414868", nocombine = true })
+-- vim.api.nvim_set_hl(0, "MiniPickPrompt", { fg = "#9ece6a", nocombine = true })
+local popup_hl = vim.api.nvim_create_augroup("PopupHighlights", { clear = true })
 
+local function fix_noice_popup()
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopup", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopupBorder", { link = "FloatBorder" })
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopupTitle", { link = "Title" })
+
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePrompt", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "NoiceCmdlineIcon", { link = "Normal" })
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = fix_noice_popup,
+})
+
+fix_noice_popup()
+
+local function set_popup_highlights()
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopup", { link = "NormalFloat" })
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopupBorder", { link = "FloatBorder" })
+    vim.api.nvim_set_hl(0, "NoiceCmdlinePopupTitle", { link = "FloatTitle" })
+    vim.api.nvim_set_hl(0, "FloatTitle", { link = "Title" })
+    vim.api.nvim_set_hl(0, "MiniPickPrompt", { link = "FloatTitle" })
+    vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { link = "Comment" })
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = set_popup_highlights,
+})
+
+set_popup_highlights()
 vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesWindowOpen",
     callback = function(args)
@@ -62,8 +91,8 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 --# noice hlgroup
-vim.api.nvim_set_hl(0, "NoiceCmdlinePopupBorder", { fg = "#9ece6a", bg = "#11121d" })
-vim.api.nvim_set_hl(0, "NoiceCmdlinePopup", { bg = "#11121d", fg = "#c0caf5" })
+-- vim.api.nvim_set_hl(0, "NoiceCmdlinePopupBorder", { fg = "#9ece6a", bg = "#11121d" })
+-- vim.api.nvim_set_hl(0, "NoiceCmdlinePopup", { bg = "#11121d", fg = "#c0caf5" })
 local function add_italic_to(group)
     local hl = vim.api.nvim_get_hl(0, { name = group }) or {}
     hl.italic = true
@@ -89,3 +118,21 @@ local groups = {
 for _, group in ipairs(groups) do
     add_italic_to(group)
 end
+
+local function toggle_tree()
+    require("nvim-tree.api").tree.toggle()
+
+    local win = vim.api.nvim_get_current_win()
+    if vim.bo.filetype == "NvimTree" then
+        vim.wo[win].winhighlight = table.concat({
+            "Normal:Normal",
+            "NormalNC:Normal",
+            "NormalFloat:Normal",
+            "EndOfBuffer:Normal",
+            "FloatBorder:FloatBorder",
+            "CursorLine:Normal",
+        }, ",")
+    end
+end
+
+vim.keymap.set("n", "<leader>e", toggle_tree)

@@ -105,24 +105,24 @@ return {
             views = {
                 cmdline_popup = {
                     border = {
-                        style = "rounded", -- 🔸 options: "single", "double", "rounded", "shadow"
+                        style = "rounded",
                         padding = { 1, 3 },
                     },
                     position = {
-                        row = "90%", -- near bottom center
+                        row = "90%",
                         col = "95%",
                     },
                     size = {
-                        width = "30%", -- relative width
+                        width = "30%",
                         height = "auto",
                     },
                     win_options = {
-                        cursorline = true,
-                        cursorlineopt = "both",
+                        cursorline = false,
                         winhighlight = table.concat({
+                            "Normal:Normal",
                             "NormalFloat:Normal",
                             "FloatBorder:FloatBorder",
-                            "CursorLine:Visual",
+                            "FloatTitle:Title",
                             "Search:None",
                         }, ","),
                     },
@@ -321,21 +321,112 @@ return {
     },
     {
         "mistricky/codesnap.nvim",
-        build = "make build_generator",
         lazy = true,
+        cmd = { "CodeSnapSafeSave", "CodeSnapSafeCopy", "CodeSnap", "CodeSnapSave" },
         keys = {
-            { "<leader>cc", "<cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
-            { "<leader>cs", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
+            { "<leader>cc", "<cmd>CodeSnapSafeCopy<cr>", mode = "x", desc = "Copy selected code snapshot (safe mode)" },
+            { "<leader>cs", "<cmd>CodeSnapSafeSave<cr>", mode = "x", desc = "Save selected code snapshot (safe mode)" },
         },
         opts = {
-            save_path = "~/Pictures/codesnap/",
-            has_breadcrumbs = true,
-            bg_theme = "bamboo",
-            watermark = "",
-            code_font_family = "JetBrainsMono Nerd Font",
+            show_line_number = false,
+            show_workspace = false,
+            snapshot_config = {
+                window = {
+                    mac_window_bar = false,
+                    margin = { x = 30, y = 30 },
+                    shadow = vim.NIL,
+                },
+                code_config = {
+                    font_family = "JetBrainsMono Nerd Font",
+                    breadcrumbs = {
+                        enable = false,
+                    },
+                },
+                watermark = {
+                    content = "",
+                },
+            },
         },
         config = function(_, opts)
             require("codesnap").setup(opts)
+
+            local function selected_line_count()
+                local start_line = vim.fn.line "'<"
+                local end_line = vim.fn.line "'>"
+                if start_line == 0 or end_line == 0 then
+                    return 0
+                end
+                return math.abs(end_line - start_line) + 1
+            end
+
+            local function target_path()
+                local dir = vim.fn.expand "~/Pictures/codesnap"
+                vim.fn.mkdir(dir, "p")
+                return string.format("%s/%s.png", dir, os.date "%Y%m%d-%H%M%S")
+            end
+
+            local function save_snapshot(path)
+                local generator = require("codesnap.module").load_generator()
+                local config = require("codesnap.config").get_config()
+                generator.save(path, config)
+            end
+
+            local function copy_with_external_tool(path)
+                if vim.fn.executable "wl-copy" == 1 then
+                    vim.system({ "sh", "-lc", string.format("wl-copy < %q", path) }, { detach = true })
+                    return true
+                end
+                if vim.fn.executable "xclip" == 1 then
+                    vim.system(
+                        { "sh", "-lc", string.format("xclip -selection clipboard -t image/png -i %q", path) },
+                        { detach = true }
+                    )
+                    return true
+                end
+                if vim.fn.executable "xsel" == 1 then
+                    vim.system({ "sh", "-lc", string.format("xsel --clipboard --input < %q", path) }, { detach = true })
+                    return true
+                end
+                return false
+            end
+
+            local function run_safe(mode)
+                local max_lines = 350
+                local lines = selected_line_count()
+                if lines > max_lines then
+                    vim.notify(
+                        string.format("CodeSnap skipped: selection has %d lines (limit %d).", lines, max_lines),
+                        vim.log.levels.WARN
+                    )
+                    return
+                end
+
+                local path = target_path()
+                local ok, err = pcall(save_snapshot, path)
+                if not ok then
+                    vim.notify("CodeSnap failed: " .. tostring(err), vim.log.levels.ERROR)
+                    return
+                end
+
+                if mode == "save" then
+                    vim.notify("CodeSnap saved to " .. path)
+                    return
+                end
+
+                if copy_with_external_tool(path) then
+                    vim.notify "CodeSnap copied to clipboard (safe mode)"
+                else
+                    vim.notify("Snapshot saved to " .. path .. " (no clipboard tool found)", vim.log.levels.WARN)
+                end
+            end
+
+            vim.api.nvim_create_user_command("CodeSnapSafeSave", function()
+                run_safe "save"
+            end, { range = true })
+
+            vim.api.nvim_create_user_command("CodeSnapSafeCopy", function()
+                run_safe "copy"
+            end, { range = true })
         end,
     },
     {
