@@ -20,6 +20,7 @@ require("mason-lspconfig").setup {
         "helm_ls",
         "basedpyright",
         "bashls",
+        "yamlls",
         "terraformls",
         "cssls",
         "tailwindcss",
@@ -38,15 +39,19 @@ require("mason-tool-installer").setup {
         "ruff",
         "shellcheck",
         "checkstyle",
+        "jdtls",
+        "java-test",
+        "tree-sitter-cli",
         "terraform",
         "tflint",
         "xmlformatter",
-        "nginx_language_server",
+        "nginx-language-server",
         "prismals",
-        {
-            "spring-boot-tools",
-            version = "1.55.1",
-        },
+        -- Held at current installed version; avoid auto-updating to 1.55.1.
+        -- {
+        --     "spring-boot-tools",
+        --     version = "1.55.1",
+        -- },
         "vscode-spring-boot-tools",
     },
 }

@@ -30,6 +30,7 @@ return {
 
         opts = {
             keymap = {
+                ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
                 ["<CR>"] = { "accept", "fallback" },
                 ["<TAB>"] = { "select_next", "fallback" },
                 ["<S-TAB>"] = { "select_prev", "fallback" },
@@ -50,6 +51,8 @@ return {
             },
             completion = {
                 menu = {
+                    auto_show = true,
+                    auto_show_delay_ms = 0,
                     min_width = 25,
                     max_height = 10,
                     border = "single",

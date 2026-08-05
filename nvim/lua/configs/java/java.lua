@@ -22,7 +22,9 @@ return {
         local function filter_existing_jars(items)
             local out = {}
             for _, item in ipairs(items) do
-                if type(item) == "string" and item ~= "" and vim.fn.filereadable(item) == 1 then
+                local is_test_runner = type(item) == "string"
+                    and item:match "com%.microsoft%.java%.test%.runner%-jar%-with%-dependencies%.jar$"
+                if type(item) == "string" and item ~= "" and not is_test_runner and vim.fn.filereadable(item) == 1 then
                     table.insert(out, item)
                 end
             end
@@ -116,10 +118,13 @@ return {
         }
 
         vim.api.nvim_create_autocmd("FileType", {
-            pattern = { "java" },
+            group = vim.api.nvim_create_augroup("KabilJdtls", { clear = true }),
+            pattern = "java",
             callback = function()
                 require("jdtls").start_or_attach(config)
             end,
         })
+
+        require("jdtls").start_or_attach(config)
     end,
 }

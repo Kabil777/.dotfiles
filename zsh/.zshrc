@@ -1,15 +1,22 @@
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [ ! -d $ZINIT_HOME ] ;then
-	mkdir -p $(dirname ZINIT_HOME)
+	mkdir -p $(dirname $ZINIT_HOME)
 	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
-export PATH=$PATH:/home/kabil/.local/bin
+typeset -U path PATH
+path=(
+  "$HOME/.npm-global/bin"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/bin"
+  $path
+)
+
 export EDITOR=/usr/bin/nvim
 
-export FZF_DEFAULT_OPTS="--color=bg+:#1a1b26,bg:#11121d,spinner:#ff6ac1,hl:#c0caf5,fg:#c0caf5,header:#ffcb6b,info:#9ece6a,pointer:#7aa2f7,marker:#ffb86c,fg+:#c0caf5,prompt:#ffb86c,hl+:#ff6ac1,border:#7aa2f7"
+export FZF_DEFAULT_OPTS="--color=bg+:#32302f,bg:#282828,spinner:#d3869b,hl:#cc241d,fg:#ebdbb2,header:#fabd2f,info:#98971a,pointer:#8ec07c,marker:#fe8019,fg+:#fbf1c7,prompt:#b8bb26,hl+:#fb4934,border:#665c54"
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS 
   --no-border
@@ -24,8 +31,8 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
 #history
 HISTFILE=~/.zsh_history
 HISTDUP=erase
-HISTSIZE=5000
-SAVEHIST=5000
+HISTSIZE=50000
+SAVEHIST=50000
 setopt INC_APPEND_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt APPEND_HISTORY
@@ -36,72 +43,66 @@ setopt HIST_IGNORE_ALL_DUPS
 bindkey '^p' history-beginning-search-backward
 bindkey '^n' history-beginning-search-forward
 
-autoload -Uz compinit bashcompinit
-compinit
-bashcompinit
+autoload -Uz compinit
+if [[ -n "${HOME}/.zcompdump"(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 zinit light Aloxaf/fzf-tab
-# zinit light chitoku-k/fzf-zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light hlissner/zsh-autopair
-zinit light jeffreytse/zsh-vi-mode
-zinit light paulirish/git-open
 zinit light MichaelAquilina/zsh-auto-notify
+zinit light jeffreytse/zsh-vi-mode
+zinit ice lucid wait'0'
+zinit light joshskidmore/zsh-fzf-history-search
+zinit ice lucid wait'0'
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice lucid wait'0'
+zinit light hlissner/zsh-autopair
+zinit ice lucid wait'0'
+zinit light paulirish/git-open
 
-zinit ice wait"0" atload"source <(kubectl completion zsh)"
-zinit ice wait"0" atload"source <(kubeadm completion zsh)"
 eval "$(starship init zsh)"
-zinit ice lucid wait
 zinit snippet OMZP::fzf
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
-export ZVM_VI_HIGHLIGHT_BACKGROUND="#28344a"
+export ZVM_VI_HIGHLIGHT_BACKGROUND="#1e1e1e"
 export ZVM_VI_HIGHLIGHT_FOREGROUND="#a9b1d6"
 export ZVM_VI_HIGHLIGHT_EXTRASTYLE=bold
 
 # env vars
 export SDKMAN_DIR="$HOME/.sdkman"
-export BAT_THEME="tokyonight_night"
+export BAT_THEME="gruvbox-dark"
 
 #kubernetes alaias
 alias k="kubectl"
 alias kns="kubens"
 alias kx="kubectx"
+alias tf="terraform"
 #alias
 alias ls="eza --icons=always"
 alias search="fzf --preview 'bat --color always {}'"
 alias c="clear"
+alias v="nvim"
+alias lg="lazygit"
+alias cz="nvim ~/.zshrc"
 alias cat='bat --style=plain --paging=never'
-git config --global core.pager "bat --paging=always"
 
 #zoxide
 eval "$(zoxide init zsh)"
-eval "$(zoxide init --cmd znav zsh)"
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+alias znav="z"
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!tokyonight_night
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 alias swappy='GTK_THEME=WhiteSur-dark swappy'
 
 # custom dunst notifications
 [ -f ~/.auto_notification.zsh ] && source ~/.auto_notification.zsh
+# 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
 
-if (( $+commands[kubeadm] )); then
-    ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-$HOME/.cache/zsh}"
-    # If the completion file does not exist, generate it and then source it
-    # Otherwise, source it and regenerate in the background
-    if [[ ! -f "$ZSH_CACHE_DIR/completions/_kubeadm" ]]; then
-        mkdir -p "$ZSH_CACHE_DIR/completions"
-        kubeadm completion zsh | tee "$ZSH_CACHE_DIR/completions/_kubeadm" >/dev/null
-        source "$ZSH_CACHE_DIR/completions/_kubeadm"
-    else
-        source "$ZSH_CACHE_DIR/completions/_kubeadm"
-        kubeadm completion zsh | tee "$ZSH_CACHE_DIR/completions/_kubeadm" >/dev/null &|
-    fi
-fi
 
-#
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Added by Antigravity CLI installer
+export PATH="/home/kabil/.local/bin:$PATH"
 
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

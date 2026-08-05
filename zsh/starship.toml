@@ -4,6 +4,7 @@ $git_branch\
 $git_status\
 $cmd_duration\
 $fill\
+$kubernetes\
 $java\
 $nodejs\
 $lua\
@@ -16,4 +17,16 @@ $line_break\
 symbol=" "
 
 [docker_context]
-format = 'via [🐋 $context](blue bold)'
+format = 'via [🐋 $context](blue bold) '
+detect_extensions = ['docker-compose.yaml','Dockerfile','docker-compose.yml']
+
+[kubernetes]
+format = '[](fg:#98971a  bold) [($user)](fg:#8ec07c ) on [($cluster)](fg:#8ec07c ) '
+disabled = false
+detect_extensions = ['k8s.yaml']
+symbol = '☸'
+style = '#c0caf5 '
+
+[terraform]
+format = ' [ $version$workspace]($style) '
+detect_extensions = ['tf', 'tfplan', 'tfstate']
